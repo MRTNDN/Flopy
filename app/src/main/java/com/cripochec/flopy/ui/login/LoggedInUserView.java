@@ -1,4 +1,4 @@
-package com.westernyey.Flopy.ui.login;
+package com.cripochec.flopy.ui.login;
 
 /**
  * Class exposing authenticated user details to the UI.

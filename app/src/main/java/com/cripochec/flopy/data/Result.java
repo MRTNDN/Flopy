@@ -1,4 +1,4 @@
-package com.westernyey.Flopy.data;
+package com.cripochec.flopy.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.
