@@ -1,0 +1,2 @@
+Это тестовый файл
+"git config --global core.autocrlf false" -испровляет ошибку Crlf
