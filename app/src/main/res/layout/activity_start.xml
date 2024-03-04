@@ -12,8 +12,6 @@
 
 
     <!-- Фон Лого приложения "Flopy" -->
-
-    <!-- Лого приложения "Flopy" -->
     <ImageView
         android:id="@+id/imageViewLogoBac"
         android:layout_width="329dp"
@@ -27,24 +25,24 @@
         app:layout_constraintVertical_bias="0.435"
         tools:ignore="MissingConstraints,VisualLintBounds,ImageContrastCheck" />
 
+    <!-- Лого приложения "Flopy" -->
     <ImageView
         android:id="@+id/imageViewLogo"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="73dp"
+        android:layout_height="76dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:importantForAccessibility="no"
         android:src="@drawable/logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAccessibility="no" />
 
     <!-- Название приложения "Flopy" -->
     <TextView
         android:id="@+id/textViewAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36dp"
         android:text="@string/app_name"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -52,10 +50,29 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewLogo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Надписи -->
-
     <!-- Условия использования -->
+    <TextView
+        android:id="@+id/textViewTerms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_massage3"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
-    <!-- Логин -->
-
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fr_input_selection"
+        android:name="com.cripochec.flopy.ui.login.InputSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTerms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
