@@ -1,4 +1,4 @@
-package com.westernyey.Flopy.ui.login;
+package com.cripochec.flopy.ui.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.westernyey.Flopy.data.LoginRepository;
-import com.westernyey.Flopy.data.Result;
-import com.westernyey.Flopy.data.model.LoggedInUser;
+import com.cripochec.flopy.data.LoginRepository;
+import com.cripochec.flopy.data.Result;
+import com.cripochec.flopy.data.model.LoggedInUser;
 import com.westernyey.Flopy.R;
 
 public class LoginViewModel extends ViewModel {

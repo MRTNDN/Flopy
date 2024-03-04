@@ -1,11 +1,11 @@
-package com.westernyey.Flopy.ui.login;
+package com.cripochec.flopy.ui.login;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.westernyey.Flopy.data.LoginDataSource;
-import com.westernyey.Flopy.data.LoginRepository;
+import com.cripochec.flopy.data.LoginDataSource;
+import com.cripochec.flopy.data.LoginRepository;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

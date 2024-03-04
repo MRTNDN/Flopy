@@ -1,6 +1,6 @@
-package com.westernyey.Flopy.data;
+package com.cripochec.flopy.data;
 
-import com.westernyey.Flopy.data.model.LoggedInUser;
+import com.cripochec.flopy.data.model.LoggedInUser;
 
 import java.io.IOException;
 
