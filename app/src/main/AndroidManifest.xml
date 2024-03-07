@@ -16,6 +16,11 @@
             android:name="com.cripochec.flopy.StartActivity"
             android:exported="true"
             />
+        <activity
+            android:name="com.westernyey.Flopy.ui.main"
+            android:exported="true"
+            />
+
     </application>
 
 </manifest>

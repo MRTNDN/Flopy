@@ -3,9 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFE0C9"
     tools:context=".ui.BackgroundFragment">
 
+    <ImageView
+        android:id="@+id/imageViewLogoBac"
+        android:layout_width="269dp"
+        android:layout_height="390dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/logo_bac"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="16dp"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAppName"
+        app:layout_constraintVertical_bias="0.435"
+        tools:ignore="MissingConstraints,VisualLintBounds,ImageContrastCheck" />
 
 </FrameLayout>
