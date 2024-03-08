@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.westernyey.Flopy.R;
+import com.westernyey.Flopy.ui.profile.Profile;
 
 public class main extends AppCompatActivity {
 
@@ -17,6 +18,7 @@ public class main extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.background_container, new BackgroundFragment())
                 .add(R.id.button_container, new ButtonFragment())
+
                 .commit();
     }
 }
