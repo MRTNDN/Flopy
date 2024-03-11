@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -23,9 +24,10 @@ public class Matches extends Fragment {
         data.add("данные");
         data.add("match");
 
-        ListView listView = view.findViewById(R.id.listView);
+        GridView gridView = view.findViewById(R.id.gridView);
         MyAdapter adapter = new MyAdapter(getActivity(), data);
-        listView.setAdapter(adapter);
+        gridView.setAdapter(adapter);
+
 
         return view;
     }

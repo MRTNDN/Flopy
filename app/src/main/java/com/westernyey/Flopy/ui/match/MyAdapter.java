@@ -28,7 +28,7 @@ public class MyAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.grid_item, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.textView = convertView.findViewById(R.id.textView);
             convertView.setTag(viewHolder);
