@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
-    tools:context="com.cripochec.flopy.ui.login.InputSelection">
+    tools:context="com.cripochec.flopy.ui.login.FragmentInputSelection">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -46,6 +46,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
             android:importantForAccessibility="no"
+            android:onClick="Change"
             android:src="@drawable/google"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel4" />
@@ -57,6 +58,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:importantForAccessibility="no"
+            android:onClick="Change"
             android:src="@drawable/vk"
             app:layout_constraintStart_toEndOf="@+id/but1"
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel4" />
@@ -68,13 +70,12 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:importantForAccessibility="no"
+            android:onClick="Change"
             android:src="@drawable/login"
             app:layout_constraintStart_toEndOf="@+id/but2"
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel4" />
 
         <!-- Подпись кнопки Google -->
-
-        <!-- Подпись кнопки VK -->
         <TextView
             android:id="@+id/textViewButton1Label2"
             android:layout_width="wrap_content"
@@ -87,6 +88,7 @@
             app:layout_constraintStart_toStartOf="@+id/but1"
             app:layout_constraintTop_toBottomOf="@+id/but1" />
 
+        <!-- Подпись кнопки VK -->
         <TextView
             android:id="@+id/textViewButton2Label2"
             android:layout_width="wrap_content"

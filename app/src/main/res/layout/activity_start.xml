@@ -66,7 +66,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fr_input_selection"
-        android:name="com.cripochec.flopy.ui.login.InputSelection"
+        android:name="com.cripochec.flopy.ui.login.FragmentInputSelection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -74,5 +74,6 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewTerms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+        tools:layout="@layout/fragment_input_selection" />
 </androidx.constraintlayout.widget.ConstraintLayout>
