@@ -13,6 +13,7 @@ import com.westernyey.Flopy.R;
 public class ButtonFragment extends Fragment {
 
     private Button btnOpenMenu;
+    private Button btnOpenSet;
     private DrawerLayout drawerLayout;
 
     @Override
@@ -20,8 +21,9 @@ public class ButtonFragment extends Fragment {
         // Загрузка макета фрагмента
         View view = inflater.inflate(R.layout.fragment_button, container, false);
 
-        // Инициализация кнопки и бокового меню
+        // Инициализация кнопок и бокового меню
         btnOpenMenu = view.findViewById(R.id.btn_open_menu);
+        btnOpenSet = view.findViewById(R.id.set_open_menu);
         drawerLayout = getActivity().findViewById(R.id.drawer_layout);
 
         // Настройка обработчика нажатия кнопки
@@ -29,6 +31,19 @@ public class ButtonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        btnOpenSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment newFragment = new settings();
+
+                // Замена фрагмента в контейнере 'profile_container'
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.profile_container, newFragment)
+                        .commit();
             }
         });
 
