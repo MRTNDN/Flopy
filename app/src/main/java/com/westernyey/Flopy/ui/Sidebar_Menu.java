@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.match.Matches;
 import com.westernyey.Flopy.ui.profile.Profile;
+import com.westernyey.Flopy.ui.youwereliked.Youwereliked;
 
 public class Sidebar_Menu extends Fragment {
 
@@ -77,8 +78,23 @@ public class Sidebar_Menu extends Fragment {
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
+                    // Скрываем или удаляем фрагмент swap, если он отображается
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    Fragment swapFragment = fragmentManager.findFragmentById(R.id.swap_container);
+                    if (swapFragment != null) {
+                        fragmentManager.beginTransaction().hide(swapFragment).commit();
+                    }
+
+                    // Открываем новый фрагмент Profile
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.profile_container, new Youwereliked())
+                            .commit();
+
+                    // Закрываем боковое меню
+                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
             }
         });
 

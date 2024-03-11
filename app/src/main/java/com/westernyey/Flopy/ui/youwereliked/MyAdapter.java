@@ -1,4 +1,4 @@
-package com.westernyey.Flopy.ui.match;
+package com.westernyey.Flopy.ui.youwereliked;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -28,7 +28,7 @@ public class MyAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.grid_item_for_matches, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.grid_item_for_youwereliked, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.textView = convertView.findViewById(R.id.textView);
             convertView.setTag(viewHolder);
