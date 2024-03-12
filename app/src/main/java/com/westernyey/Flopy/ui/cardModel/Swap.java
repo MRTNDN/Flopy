@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -20,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Swap extends Fragment {
-    private ArrayAdapter<String> arrayAdapter;
-    private List<String> data;
+    private CardAdapter cardAdapter;
+    private List<CardModel> data;
     private SwipeFlingAdapterView flingAdapterView;
 
     // Пустой конструктор (необязательно)
@@ -56,25 +55,25 @@ public class Swap extends Fragment {
         });
 
         data = new ArrayList<>();
-        data.add("бобер");
-        data.add("еж");
-        data.add("мурлок");
-        data.add("обезъянка");
-        data.add("дрюс");
-        data.add("Неупокоева");
-        data.add("DJ tape");
-        data.add("Оксана");
-        data.add("Метин");
 
-        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.card_item_for_swap, R.id.data, data);
+       data.add(new CardModel("бобер", R.drawable.bober));
+        data.add(new CardModel("dj tape", R.drawable.djtape));
+        data.add(new CardModel("druc", R.drawable.druc));
+        data.add(new CardModel("ezh", R.drawable.ezh));
+        data.add(new CardModel("metin", R.drawable.metin));
+        data.add(new CardModel("макака", R.drawable.monkey));
+        data.add(new CardModel("Неупокоева", R.drawable.neupok));
+        data.add(new CardModel("Оксана", R.drawable.oksana));
 
-        flingAdapterView.setAdapter(arrayAdapter);
+        cardAdapter = new CardAdapter(getActivity(), R.layout.card_item_for_swap, data);
+
+        flingAdapterView.setAdapter(cardAdapter);
 
         flingAdapterView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
                 data.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                cardAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -101,7 +100,7 @@ public class Swap extends Fragment {
         flingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int i, Object o) {
-                Toast.makeText(getActivity(), "data is " + data.get(i), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
             }
         });
 
