@@ -3,11 +3,9 @@ package com.westernyey.Flopy.ui;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.FrameLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.cardModel.Swap;
 

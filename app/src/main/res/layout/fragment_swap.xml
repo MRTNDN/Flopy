@@ -5,62 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Прямоугольник с закругленными углами -->
-    <LinearLayout
-        android:id="@+id/rectangle_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_rectangle"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintDimensionRatio="h,4:6"
-        app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_top">
-
-        <!-- Надписи лесенкой -->
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text 1" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Text 2" />
-
-        <!-- Добавьте другие надписи, если необходимо -->
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.lorentzos.flingswipe.SwipeFlingAdapterView
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/rectangle_layout"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:rotation_degrees="15.0"/>
+
+    <!-- Отступ для кнопки "dislike" -->
+    <Button
+        android:id="@+id/dislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dislike"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@id/like" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top"
+    <!-- Отступ для кнопки "like" -->
+    <Button
+        android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.71" />
+        android:text="like"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dislike"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
