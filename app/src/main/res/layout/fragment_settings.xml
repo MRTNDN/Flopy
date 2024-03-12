@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFE0C9">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,28 +17,60 @@
             android:text="Settings"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_marginBottom="16dp"/>
 
-
+        <!-- Переключатель для смены темы -->
         <Switch
-            android:id="@+id/switch_option"
+            android:id="@+id/switch_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option 1"
+            android:textColor="@color/black"
+            android:text="Change Theme"
             android:checked="false"/>
+
+        <!-- Переключатели для отключения уведомлений -->
         <Switch
-            android:id="@+id/switch_option2"
+            android:id="@+id/switch_notification1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option 2"
+            android:textColor="@color/black"
+            android:text="Notification 1"
+            android:checked="false"/>
+        <Switch
+            android:id="@+id/switch_notification2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Notification 2"
+            android:checked="false"/>
+        <Switch
+            android:id="@+id/switch_notification3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Notification 3"
+            android:checked="false"/>
+        <Switch
+            android:id="@+id/switch_notification4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Notification 4"
             android:checked="false"/>
 
-
+        <!-- Выпадающий список -->
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
 
         <!-- Кнопка для сохранения изменений -->
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Save"
             android:layout_marginTop="16dp"/>

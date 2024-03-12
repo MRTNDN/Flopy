@@ -8,6 +8,8 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
+
 import com.westernyey.Flopy.R;
 
 public class ButtonFragment extends Fragment {
@@ -37,6 +39,12 @@ public class ButtonFragment extends Fragment {
         btnOpenSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Скрываем или удаляем фрагмент swap, если он отображается
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment swapFragment = fragmentManager.findFragmentById(R.id.swap_container);
+                if (swapFragment != null) {
+                    fragmentManager.beginTransaction().hide(swapFragment).commit();
+                }
 
                 Fragment newFragment = new settings();
 
