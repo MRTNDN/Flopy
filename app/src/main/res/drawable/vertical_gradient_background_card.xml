@@ -1,0 +1,10 @@
+<!-- res/drawable/vertical_gradient.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#000000"
+    android:centerColor="#000000"
+    android:endColor="#00000000"
+    android:angle="90"
+    />
+    <corners android:radius="30dp" />
+</shape>
