@@ -66,7 +66,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fr_input_selection"
-        android:name="com.cripochec.flopy.ui.login.FragmentInputSelection"
+        android:name="com.cripochec.Flopy.ui.login.FragmentInputSelection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"

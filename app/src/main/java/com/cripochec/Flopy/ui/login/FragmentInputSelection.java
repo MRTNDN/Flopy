@@ -1,4 +1,4 @@
-package com.cripochec.Flopy.ui.login;
+package com.westernyey.Flopy.ui.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,7 +46,7 @@ public class FragmentInputSelection extends Fragment {
             @Override
             public void onClick(View v) {
                 // Обработка нажатия на кнопку but3
-                Fragment fragment = new com.cripochec.flopy.ui.login.FragmentLogin();
+                Fragment fragment = new FragmentLogin();
                 replaceFragment(fragment);
             }
         });
