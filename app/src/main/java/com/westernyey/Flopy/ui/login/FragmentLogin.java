@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.main;
+import com.westernyey.Flopy.ui.register.FragmentRegister;
 
 
 public class FragmentLogin extends Fragment {
@@ -53,8 +54,8 @@ public class FragmentLogin extends Fragment {
 
         but_register.setOnClickListener(v -> {
             // Обработка нажатия на кнопку but_register
-//            Fragment fragment = new FragmentLogin();
-//            replaceFragment(fragment);
+            Fragment fragment = new FragmentRegister();
+            replaceFragment(fragment);
         });
         return rootView;
     }
