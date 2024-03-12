@@ -30,7 +30,7 @@ public class Swap extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Надуваем макет фрагмента
         View rootView = inflater.inflate(R.layout.fragment_swap, container, false);
-
+//ghbdtn vbh
         // Инициализация данных
         mData = new ArrayList<>();
 
