@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
-    tools:context="com.cripochec.Flopy.ui.login.FragmentInputSelection">
+    tools:context=".ui.login.FragmentInputSelection">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel3" />
 
         <ImageView
-            android:id="@+id/but1"
+            android:id="@+id/but_input_google"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="4dp"
@@ -51,25 +51,25 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel4" />
 
         <ImageView
-            android:id="@+id/but2"
+            android:id="@+id/but_input_vk"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:importantForAccessibility="no"
             android:src="@drawable/vk"
-            app:layout_constraintStart_toEndOf="@+id/but1"
+            app:layout_constraintStart_toEndOf="@+id/but_input_google"
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel4" />
 
         <ImageView
-            android:id="@+id/but3"
+            android:id="@+id/but_input_login"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:importantForAccessibility="no"
             android:src="@drawable/login"
-            app:layout_constraintStart_toEndOf="@+id/but2"
+            app:layout_constraintStart_toEndOf="@+id/but_input_vk"
             app:layout_constraintTop_toBottomOf="@+id/textViewLabel4" />
 
         <!-- Подпись кнопки Google -->
@@ -81,9 +81,9 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/but1"
-            app:layout_constraintStart_toStartOf="@+id/but1"
-            app:layout_constraintTop_toBottomOf="@+id/but1" />
+            app:layout_constraintEnd_toEndOf="@+id/but_input_google"
+            app:layout_constraintStart_toStartOf="@+id/but_input_google"
+            app:layout_constraintTop_toBottomOf="@+id/but_input_google" />
 
         <!-- Подпись кнопки VK -->
         <TextView
@@ -94,9 +94,9 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/but2"
-            app:layout_constraintStart_toStartOf="@+id/but2"
-            app:layout_constraintTop_toBottomOf="@+id/but2" />
+            app:layout_constraintEnd_toEndOf="@+id/but_input_vk"
+            app:layout_constraintStart_toStartOf="@+id/but_input_vk"
+            app:layout_constraintTop_toBottomOf="@+id/but_input_vk" />
 
         <!-- Подпись кнопки Login -->
         <TextView
@@ -107,8 +107,8 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/but3"
-            app:layout_constraintStart_toStartOf="@+id/but3"
-            app:layout_constraintTop_toBottomOf="@+id/but3" />
+            app:layout_constraintEnd_toEndOf="@+id/but_input_login"
+            app:layout_constraintStart_toStartOf="@+id/but_input_login"
+            app:layout_constraintTop_toBottomOf="@+id/but_input_login" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

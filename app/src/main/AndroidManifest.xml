@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Flopy"
         tools:targetApi="31">
         <activity
-            android:name="com.cripochec.Flopy.ActivityStart"
+            android:name="com.westernyey.Flopy.ui.ActivityStart"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
