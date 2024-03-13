@@ -35,7 +35,7 @@ public class FragmentLogin extends Fragment {
             String enteredEmail = email.getText().toString();
             String enteredPassword = password.getText().toString();
 
-            if ("admin".equals(enteredEmail) && "admin".equals(enteredPassword)) {
+            if ("".equals(enteredEmail) && "".equals(enteredPassword)) {
                 // Логин и пароль правильные, выполните необходимые действия
                 // Например, переход на другой экран или выполнение других операций
                 // Ваш код здесь
