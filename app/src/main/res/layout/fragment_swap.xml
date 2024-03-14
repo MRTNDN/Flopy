@@ -11,14 +11,14 @@
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="15dp"
-
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edges"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -26,11 +26,11 @@
 
     <Button
         android:id="@+id/dislike"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="40dp"
         android:layout_marginBottom="20dp"
-        android:text="dislike"
+        android:background="@drawable/cross"
         app:layout_constraintBottom_toBottomOf="@+id/swipe"
         app:layout_constraintStart_toStartOf="@+id/swipe" />
 
@@ -38,23 +38,23 @@
 
     <Button
         android:id="@+id/like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="like"
-        app:layout_constraintBottom_toBottomOf="@+id/dislike"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/heart"
+        app:layout_constraintBottom_toBottomOf="@+id/like2"
         app:layout_constraintEnd_toEndOf="@+id/swipe"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="@+id/swipe"
-        app:layout_constraintTop_toTopOf="@+id/like2"
+        app:layout_constraintTop_toTopOf="@+id/dislike"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/like2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/double_heart"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="20dp"
-        android:text="like2"
         app:layout_constraintBottom_toBottomOf="@+id/swipe"
         app:layout_constraintEnd_toEndOf="@+id/swipe" />
 

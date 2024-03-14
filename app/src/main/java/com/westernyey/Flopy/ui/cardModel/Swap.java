@@ -34,6 +34,9 @@ public class Swap extends Fragment {
         // Надуваем макет фрагмента
         View rootView = inflater.inflate(R.layout.fragment_swap, container, false);
 
+        // Применяем фон с закругленными углами
+        rootView.setBackgroundResource(R.drawable.rounded_edges);
+
         flingAdapterView = rootView.findViewById(R.id.swipe);
         // Инициализация кнопок "like" и "dislike"
         Button like = rootView.findViewById(R.id.like);
@@ -56,7 +59,7 @@ public class Swap extends Fragment {
 
         data = new ArrayList<>();
 
-       data.add(new CardModel("бобер", R.drawable.bober));
+        data.add(new CardModel("бобер", R.drawable.bober));
         data.add(new CardModel("dj tape", R.drawable.djtape));
         data.add(new CardModel("druc", R.drawable.druc));
         data.add(new CardModel("ezh", R.drawable.ezh));
