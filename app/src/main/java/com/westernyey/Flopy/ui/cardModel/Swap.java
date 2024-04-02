@@ -81,12 +81,12 @@ public class Swap extends Fragment {
 
             @Override
             public void onLeftCardExit(Object o) {
-                Toast.makeText(getActivity(), "dislike", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getActivity(), "dislike", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -103,7 +103,7 @@ public class Swap extends Fragment {
         flingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int i, Object o) {
-                Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
             }
         });
 
