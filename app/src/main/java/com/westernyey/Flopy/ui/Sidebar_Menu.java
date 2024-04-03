@@ -16,7 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.match.Matches;
+import com.westernyey.Flopy.ui.match.MatchFragment;
 import com.westernyey.Flopy.ui.profile.Profile;
 import com.westernyey.Flopy.ui.youwereliked.Youwereliked;
 
@@ -67,7 +67,7 @@ public class Sidebar_Menu extends Fragment {
 
                 // Открываем новый фрагмент Profile
                 fragmentManager.beginTransaction()
-                        .replace(R.id.profile_container, new Matches())
+                        .replace(R.id.profile_container, new MatchFragment())
                         .commit();
 
                 // Закрываем боковое меню
