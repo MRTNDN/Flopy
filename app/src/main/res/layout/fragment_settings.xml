@@ -1,78 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- fragment_settings.xml -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFE0C9">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Заголовок экрана настроек -->
+        <!-- Settings Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:textSize="24sp"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Переключатель для смены темы -->
+        <!-- Theme Switch -->
         <Switch
             android:id="@+id/switch_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Change Theme"
-            android:checked="false"/>
+            android:textColor="#FFFFFF"
+            android:text="Dark Theme"
+            android:checked="false"
+            android:thumbTint="#FF4081"
+            android:trackTint="#FF4081"/>
 
-        <!-- Переключатели для отключения уведомлений -->
+        <!-- Notification Switches -->
         <Switch
             android:id="@+id/switch_notification1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="#FFFFFF"
             android:text="Notification 1"
-            android:checked="false"/>
+            android:checked="false"
+            android:thumbTint="#FF4081"
+            android:trackTint="#FF4081"/>
         <Switch
             android:id="@+id/switch_notification2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="#FFFFFF"
             android:text="Notification 2"
-            android:checked="false"/>
+            android:checked="false"
+            android:thumbTint="#FF4081"
+            android:trackTint="#FF4081"/>
         <Switch
             android:id="@+id/switch_notification3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="#FFFFFF"
             android:text="Notification 3"
-            android:checked="false"/>
+            android:checked="false"
+            android:thumbTint="#FF4081"
+            android:trackTint="#FF4081"/>
         <Switch
             android:id="@+id/switch_notification4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="#FFFFFF"
             android:text="Notification 4"
-            android:checked="false"/>
+            android:checked="false"
+            android:thumbTint="#FF4081"
+            android:trackTint="#FF4081"/>
 
-        <!-- Выпадающий список -->
+        <!-- Spinner -->
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"/>
+            android:textColor="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF4081"/>
 
-        <!-- Кнопка для сохранения изменений -->
+        <!-- Save Button -->
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Save"
-            android:layout_marginTop="16dp"/>
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF4081"
+            android:layout_marginTop="24dp"/>
     </LinearLayout>
+
 </ScrollView>

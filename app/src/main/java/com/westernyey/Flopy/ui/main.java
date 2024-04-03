@@ -21,7 +21,7 @@ public class main extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Добавляем BackgroundFragment в его контейнер
-        fragmentTransaction.add(R.id.background_container, new BackgroundFragment());
+         fragmentTransaction.add(R.id.background_container, new BackgroundFragment());
 
         // Добавляем ButtonFragment в его контейнер
         fragmentTransaction.add(R.id.button_container, new ButtonFragment());
@@ -31,8 +31,8 @@ public class main extends AppCompatActivity {
 
         // Создаем параметры размещения для фрагмента
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.TOP; // Устанавливаем размещение фрагмента вверху экрана
-        layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.swap_top_margin); // Устанавливаем отступ от верхней части экрана
+        layoutParams.gravity = Gravity.TOP; // Устанавливаем размещение фрагмента вверху экрана ?? не работает походу
+        layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.swap_top_margin); // Устанавливаем отступ от верхней части экрана ?? не работает походу
         swapFragment.setLayoutParams(layoutParams);
 
         // Добавляем SwapFragment в контейнер
