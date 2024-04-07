@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.login.FragmentLogin;
-
+import com.cripochec.Flopy.ui.utils.FragmentUtils;
+import com.cripochec.Flopy.ui.utils.ToastUtils;
+import com.cripochec.Flopy.ui.utils.RequestUtils;
 
 public class FragmentRegister extends Fragment {
 
@@ -23,19 +26,23 @@ public class FragmentRegister extends Fragment {
 
         Button but_register = rootView.findViewById(R.id.buttonRegisterUser);
 
+        EditText new_email = rootView.findViewById(R.id.editEmailRegister);
+        EditText pas1 = rootView.findViewById(R.id.editPassword1Register);
+        EditText pas2 = rootView.findViewById(R.id.editPassword2Register);
+
+        // Обработка нажатия на кнопку but_register
         but_register.setOnClickListener(v -> {
-            // Обработка нажатия на кнопку but_register
-            Fragment fragment = new FragmentRegisterCode();
-            replaceFragment(fragment);
+            String text = RequestUtils.request();
+            ToastUtils.showShortToast(getContext(), text);
+//            if (pas1.getText().toString().equals(pas2.getText().toString())) {
+//                String text = RequestUtils.request();
+//                ToastUtils.showShortToast(getContext(), text);
+//                Fragment fragment = new FragmentRegisterCode();
+//                FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment);
+//            } else {
+//                ToastUtils.showShortToast(getContext(), "Пароли не совпадают");
+//            }
         });
         return rootView;
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fr_activity_start, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 }
