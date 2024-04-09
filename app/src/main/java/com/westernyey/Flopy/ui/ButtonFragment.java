@@ -46,7 +46,7 @@ public class ButtonFragment extends Fragment {
                     fragmentManager.beginTransaction().hide(swapFragment).commit();
                 }
 
-                Fragment newFragment = new settings();
+                Fragment newFragment = new SettingsFragment();
 
                 // Замена фрагмента в контейнере 'profile_container'
                 getActivity().getSupportFragmentManager().beginTransaction()

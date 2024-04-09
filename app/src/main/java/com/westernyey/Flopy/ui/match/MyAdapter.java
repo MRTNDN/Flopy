@@ -1,3 +1,4 @@
+// MyAdapter.java
 package com.westernyey.Flopy.ui.match;
 
 import android.content.Context;
@@ -13,14 +14,12 @@ import com.westernyey.Flopy.R;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends ArrayAdapter<String> {
+public class MyAdapter<T> extends ArrayAdapter<T> {
     private Context context;
-    private ArrayList<String> data;
 
-    public MyAdapter(Context context, ArrayList<String> data) {
+    public MyAdapter(Context context, ArrayList<T> data) {
         super(context, 0, data);
         this.context = context;
-        this.data = data;
     }
 
     @NonNull
@@ -36,8 +35,8 @@ public class MyAdapter extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String item = getItem(position);
-        viewHolder.textView.setText(item);
+        T item = getItem(position);
+        viewHolder.textView.setText(String.valueOf(item));
 
         return convertView;
     }

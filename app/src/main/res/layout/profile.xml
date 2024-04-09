@@ -134,6 +134,45 @@
                 android:textColor="#FFFFFF"
                 app:layout_constraintStart_toStartOf="@id/editEmail"
                 app:layout_constraintTop_toBottomOf="@id/editInterests" />
+            <!-- Выпадающий список для знака зодиака -->
+            <Spinner
+                android:id="@+id/spinnerZodiac"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintStart_toStartOf="@id/editEmail"
+                app:layout_constraintTop_toBottomOf="@id/editDescription" />
+
+            <!-- Выпадающий список для детей -->
+            <Spinner
+                android:id="@+id/spinnerChildren"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintStart_toStartOf="@id/editEmail"
+                app:layout_constraintTop_toBottomOf="@id/spinnerZodiac" />
+
+            <!-- Выпадающий список для алкоголя -->
+            <Spinner
+                android:id="@+id/spinnerAlcohol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintStart_toStartOf="@id/editEmail"
+                app:layout_constraintTop_toBottomOf="@id/spinnerChildren" />
+
+            <!-- Выпадающий список для курения -->
+            <Spinner
+                android:id="@+id/spinnerSmoking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_background"
+                app:layout_constraintStart_toStartOf="@id/editEmail"
+                app:layout_constraintTop_toBottomOf="@id/spinnerAlcohol" />
 
         </LinearLayout>
 

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -81,12 +83,18 @@ public class Swap extends Fragment {
 
             @Override
             public void onLeftCardExit(Object o) {
-                Toast.makeText(getActivity(), "dislike", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getActivity(), "dislike", Toast.LENGTH_SHORT).show();
+               // View cardView = (View) o;
+              //  Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.scale_out_left);
+              //  cardView.startAnimation(animation);
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
+                //View cardView = (View) o;
+                //Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.scale_out_right);
+               // cardView.startAnimation(animation);
+                // Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -103,7 +111,7 @@ public class Swap extends Fragment {
         flingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int i, Object o) {
-                Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
             }
         });
 

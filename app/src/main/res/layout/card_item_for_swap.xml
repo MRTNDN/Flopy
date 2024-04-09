@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rounded_edges"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <!-- Изображение -->
     <ImageView
+        android:background="@drawable/rounded_edges"
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:backgroundTint="@color/castom_red"
-        android:background="@drawable/rounded_edges"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
