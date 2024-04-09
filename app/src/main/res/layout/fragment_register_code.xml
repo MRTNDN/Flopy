@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editCode2"
+        android:id="@+id/editCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -37,8 +37,8 @@
         android:padding="10dp"
         android:textColor="#FFFFFF"
         android:textColorHint="@color/textColorHint"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/emailTextView"
+        app:layout_constraintTop_toBottomOf="@+id/emailTextView"
         tools:ignore="TextFields" />
 
     <Button
@@ -54,10 +54,10 @@
         android:text="@string/register_code_button"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/editCode2"
+        app:layout_constraintEnd_toEndOf="@+id/editCode"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/editCode2"
-        app:layout_constraintTop_toBottomOf="@+id/editCode2" />
+        app:layout_constraintStart_toStartOf="@+id/editCode"
+        app:layout_constraintTop_toBottomOf="@+id/editCode" />
 
     <TextView
         android:id="@+id/textView3"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewLabel5" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/emailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
