@@ -19,24 +19,28 @@ import java.net.URL;
 public class RegisterRequestUtils extends AsyncTask<String, Void, String> {
 
     private final FragmentRegister fragment;
+    private final String request_line;
+    private final String method;
+    private final String data;
 
-    public RegisterRequestUtils(FragmentRegister fragment) {
+    public RegisterRequestUtils(FragmentRegister fragment, String request_line, String method, String data) {
+
         this.fragment = fragment;
+        this.request_line = request_line;
+        this.method = method;
+        this.data = data;
     }
 
 
     @Override
     protected String doInBackground(String... params) {
-        String email = params[0];
-        String password = params[1];
         try {
-            String URL_SERVER = "http://90.156.231.211:5000/register_data";
+            String URL_SERVER = "http://90.156.231.211:5000/"+request_line;
             URL url = new URL(URL_SERVER);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
+            con.setRequestMethod(method);
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
-            String data = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
             OutputStream os = con.getOutputStream();
 
             os.write(data.getBytes());

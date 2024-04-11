@@ -39,13 +39,14 @@ public class FragmentRegisterCode extends Fragment {
 
 
         but_send.setOnClickListener(v -> {
-            int new_code = Integer.parseInt(edit_code.toString());
+            String enteredCode = edit_code.getText().toString();
             // Обработка нажатия на кнопку but_send
-            if (code == new_code){
+            if (!enteredCode.isEmpty() && Integer.parseInt(enteredCode) == code) {
                 Fragment fragment = new FragmentLogin();
                 FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment);
+            } else {
+                // Handle case when the entered code is empty or doesn't match the stored code
             }
-
         });
 
         // Использование данных

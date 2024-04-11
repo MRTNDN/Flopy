@@ -40,7 +40,11 @@ public class FragmentRegister extends Fragment {
                 if (pas1.getText().toString().length() >= 8 && pas2.getText().toString().length() >= 8) {
                     // Проверка на совпадение паролей
                     if (pas1.getText().toString().equals(pas2.getText().toString())) {
-                        new RegisterRequestUtils(this).execute(new_email.getText().toString(), pas1.getText().toString());
+                        new RegisterRequestUtils(this, "register_data", "POST", "{\"email\": \"" + new_email + "\", \"password\": \"" + pas1 + "\"}").execute(new_email.getText().toString(), pas1.getText().toString());
+
+                        // Test line
+                        ToastUtils.showShortToast(getContext(), String.valueOf(status)+"вывод статуса для тыстирования, если True то сообщение на почту отправленно");
+
                         if (status){
                             // Передача данных в FragmentRegisterCode
                             Fragment fragment = new FragmentRegisterCode();
