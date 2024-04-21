@@ -8,18 +8,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.cripochec.Flopy.ui.utils.FragmentUtils;
+import com.cripochec.Flopy.ui.utils.PersonInfo;
+import com.cripochec.Flopy.ui.utils.RequestUtils;
+import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.main;
 import com.westernyey.Flopy.ui.register.FragmentRegister;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class FragmentLogin extends Fragment {
+
+    private int id_person;
+    private boolean status;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,37 +41,45 @@ public class FragmentLogin extends Fragment {
             // Обработка нажатия на кнопку but_login
             String enteredEmail = email.getText().toString();
             String enteredPassword = password.getText().toString();
-
-            if ("".equals(enteredEmail) && "".equals(enteredPassword)) {
-                // Логин и пароль правильные, выполните необходимые действия
-                // Например, переход на другой экран или выполнение других операций
-                // Ваш код здесь
-                Intent intent = new Intent(requireContext(), main.class);
-
-
-                // Запускаем новую активность
-                startActivity(intent);
-            } else {
-                // Логин или пароль неверные, выполните соответствующие действия
-                // Например, отобразите сообщение об ошибке или выполните другие операции
-                // Ваш код здесь
-                Toast.makeText(requireContext(), "Неверный логин или пароль", Toast.LENGTH_LONG).show();
-            }
+            new RequestUtils(FragmentLogin.this, "check_person", "POST", "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}").execute();
+            new android.os.Handler().postDelayed(
+                    () -> {
+                        if (status){
+                            Intent intent = new Intent(requireContext(), main.class);
+                            PersonInfo.saveData(requireContext(), id_person, false);
+                            // Запускаем новую активность
+                            startActivity(intent);
+                        } else {
+                            ToastUtils.showShortToast(getContext(), "Неверный логин или пароль");
+                            email.setText("");
+                            password.setText("");
+                        }
+                    },
+                    2000
+            );
         });
 
         but_register.setOnClickListener(v -> {
             // Обработка нажатия на кнопку but_register
             Fragment fragment = new FragmentRegister();
-            replaceFragment(fragment);
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment);
         });
         return rootView;
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fr_activity_start, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+
+    // Метод для обновления данных
+    public void updateData(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getBoolean("status");
+            this.id_person = jsonObject.getInt("id_person");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void handleEmptyResponse() {
+        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново");
     }
 }
