@@ -31,7 +31,7 @@
         </activity>
 
         <activity
-            android:name="com.westernyey.Flopy.ui.main"
+            android:name="com.westernyey.Flopy.ui.ActivityMain"
             android:exported="true"
             />
 

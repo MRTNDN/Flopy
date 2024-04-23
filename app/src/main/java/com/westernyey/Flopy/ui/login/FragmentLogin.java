@@ -16,7 +16,7 @@ import com.cripochec.Flopy.ui.utils.PersonInfo;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.main;
+import com.westernyey.Flopy.ui.ActivityMain;
 import com.westernyey.Flopy.ui.register.FragmentRegister;
 
 import org.json.JSONException;
@@ -45,7 +45,7 @@ public class FragmentLogin extends Fragment {
             new android.os.Handler().postDelayed(
                     () -> {
                         if (status){
-                            Intent intent = new Intent(requireContext(), main.class);
+                            Intent intent = new Intent(requireContext(), ActivityMain.class);
                             PersonInfo.saveData(requireContext(), id_person, false);
                             // Запускаем новую активность
                             startActivity(intent);
