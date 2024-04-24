@@ -11,12 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
+import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.match.MatchFragment;
-import com.westernyey.Flopy.ui.profile.Profile;
-import com.westernyey.Flopy.ui.youwereliked.Youwereliked;
+import com.westernyey.Flopy.ui.FragmentSlider;
+import com.westernyey.Flopy.ui.profile.FragmentProfile;
 
 public class Sidebar_Menu extends Fragment {
 
@@ -25,71 +24,49 @@ public class Sidebar_Menu extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.sidebar_menu, container, false);
 
-        Button button1 = rootView.findViewById(R.id.b1);
-        Button button2 = rootView.findViewById(R.id.b2);
-        Button button3 = rootView.findViewById(R.id.b3);
-        Button button4 = rootView.findViewById(R.id.b4);
+        Button btn_profile = rootView.findViewById(R.id.b1);
+        Button btn_like = rootView.findViewById(R.id.b2);
+        Button btn_massage = rootView.findViewById(R.id.b3);
+        Button btn_main = rootView.findViewById(R.id.b4);
 
-        button1.setOnClickListener(v -> {
-            // Обработка нажатия на кнопку button1
-            // Скрываем или удаляем фрагмент swap, если он отображается
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            Fragment swapFragment = fragmentManager.findFragmentById(R.id.swap_container);
-            if (swapFragment != null) {
-                fragmentManager.beginTransaction().hide(swapFragment).commit();
-            }
-
-            // Открываем новый фрагмент Profile
-            fragmentManager.beginTransaction()
-                    .replace(R.id.profile_container, new Profile())
-                    .commit();
+        btn_profile.setOnClickListener(v -> {
+            // Обработка нажатия на кнопку btn_profile
+            Fragment fragment = new FragmentProfile();
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
             DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
-        button2.setOnClickListener(v -> {
-            // Обработка нажатия на кнопку button2
-            // Скрываем или удаляем фрагмент swap, если он отображается
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            Fragment swapFragment = fragmentManager.findFragmentById(R.id.swap_container);
-            if (swapFragment != null) {
-                fragmentManager.beginTransaction().hide(swapFragment).commit();
-            }
-
-            // Открываем новый фрагмент Profile
-            fragmentManager.beginTransaction()
-                    .replace(R.id.profile_container, new MatchFragment())
-                    .commit();
+        btn_like.setOnClickListener(v -> {
+            // Обработка нажатия на кнопку btn_like
+            Fragment fragment = new FragmentProfile();
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
             DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
-        button3.setOnClickListener(v -> {
-            // Обработка нажатия на кнопку button3
-            // Скрываем или удаляем фрагмент swap, если он отображается
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            Fragment swapFragment = fragmentManager.findFragmentById(R.id.swap_container);
-            if (swapFragment != null) {
-                fragmentManager.beginTransaction().hide(swapFragment).commit();
-            }
-
-            // Открываем новый фрагмент Profile
-            fragmentManager.beginTransaction()
-                    .replace(R.id.profile_container, new Youwereliked())
-                    .commit();
+        btn_massage.setOnClickListener(v -> {
+            // Обработка нажатия на кнопку btn_massage
+            Fragment fragment = new FragmentProfile();
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
             DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
-        button4.setOnClickListener(v -> {
-            // Обработка нажатия на кнопку button4
+        btn_main.setOnClickListener(v -> {
+            // Обработка нажатия на кнопку btn_main
+            Fragment fragment = new FragmentSlider();
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
+            // Закрываем боковое меню
+            DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         });
         return rootView;
     }

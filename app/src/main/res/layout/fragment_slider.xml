@@ -8,6 +8,7 @@
     tools:context=".ui.FragmentSlider">
 
     <!-- Контейнер фона -->
+
     <FrameLayout
         android:id="@+id/background_container"
         android:layout_width="match_parent"
@@ -15,49 +16,59 @@
         android:background="@color/background_color">
 
         <!-- Контейнер для содержимого, который будет под кнопками -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/btn_open_menu"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/navigation_but_menu"
-                tools:layout_editor_absoluteX="20dp"
-                tools:layout_editor_absoluteY="10dp"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/btn_open_settings"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/navigation_but_settings"
-                tools:layout_editor_absoluteX="313dp"
-                tools:layout_editor_absoluteY="10dp"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/btn_open_filters"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/navigation_but_filters"
-                tools:ignore="MissingConstraints,SpeakableTextPresentCheck"
-                tools:layout_editor_absoluteX="243dp"
-                tools:layout_editor_absoluteY="10dp" />
-
-            <FrameLayout
-                android:id="@+id/swap_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_open_filters" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
     <!-- Сайдбар -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_open_menu"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/navigation_but_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/btn_open_settings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/navigation_but_settings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/btn_open_filters"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/navigation_but_filters"
+            app:layout_constraintEnd_toStartOf="@+id/btn_open_settings"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <FrameLayout
+            android:id="@+id/swap_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_open_filters" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/sidebar_menu"
         android:name="com.westernyey.Flopy.ui.menu.Sidebar_Menu"
