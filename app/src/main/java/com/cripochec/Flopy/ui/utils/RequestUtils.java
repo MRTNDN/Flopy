@@ -36,7 +36,8 @@ public class RequestUtils extends AsyncTask<String, Void, String> {
         HttpURLConnection con = null;
         BufferedReader in = null;
         try {
-            String URL_SERVER = "http://90.156.231.211:5000/" + requestLine;
+//            String URL_SERVER = "http://90.156.231.211:5000/" + requestLine;
+            String URL_SERVER = "http://192.168.0.102:5000/" + requestLine;
             URL url = new URL(URL_SERVER);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod(method);

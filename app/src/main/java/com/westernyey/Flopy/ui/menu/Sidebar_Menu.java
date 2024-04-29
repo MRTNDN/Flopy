@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.FragmentSlider;
+import com.westernyey.Flopy.ui.slider.FragmentSlider;
 import com.westernyey.Flopy.ui.profile.FragmentProfile;
 
 public class Sidebar_Menu extends Fragment {

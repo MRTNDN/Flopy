@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.cripochec.Flopy.ui.utils.PersonInfo;
+import com.cripochec.Flopy.ui.utils.JsonUtils.JsonUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
@@ -54,7 +54,8 @@ public class FragmentRegisterCode extends Fragment {
                         () -> {
                             if (status){
                                 Intent intent = new Intent(requireContext(), ActivityMain.class);
-                                PersonInfo.saveData(requireContext(), id_person, false);
+                                JsonUtils.saveID(requireContext(), id_person);
+                                JsonUtils.saveEntry(requireContext(), true);
                                 // Запускаем новую активность
                                 startActivity(intent);
                             } else {
@@ -62,7 +63,7 @@ public class FragmentRegisterCode extends Fragment {
                                 edit_code.setText("");
                             }
                         },
-                        2000
+                        3000
                 );
             } else {
                 ToastUtils.showShortToast(getContext(), "Неверный код");
@@ -76,14 +77,25 @@ public class FragmentRegisterCode extends Fragment {
     public void updateData(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getBoolean("status");
-            this.id_person = jsonObject.getInt("id_person");
+            if (jsonObject.has("status") && jsonObject.has("id_person")) {
+                this.status = jsonObject.getBoolean("status");
+                this.id_person = jsonObject.getInt("id_person");
+            } else {
+                // Обработка случая, когда ключи "status" и "id_person" отсутствуют в ответе
+                handleEmptyResponse();
+            }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            // Обработка ошибки парсинга JSON
+            handleJsonParsingError(e);
         }
     }
 
-    public void handleEmptyResponse() {
-        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново");
+    private void handleEmptyResponse() {
+        ToastUtils.showShortToast(getContext(), "Ошибка сервера: отсутствуют данные");
+    }
+
+    private void handleJsonParsingError(JSONException e) {
+        e.printStackTrace();
+        ToastUtils.showShortToast(getContext(), "Ошибка парсинга данных: " + e.getMessage());
     }
 }

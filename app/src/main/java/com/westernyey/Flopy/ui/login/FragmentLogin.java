@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
-import com.cripochec.Flopy.ui.utils.PersonInfo;
+import com.cripochec.Flopy.ui.utils.JsonUtils.JsonUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
@@ -46,7 +46,8 @@ public class FragmentLogin extends Fragment {
                     () -> {
                         if (status){
                             Intent intent = new Intent(requireContext(), ActivityMain.class);
-                            PersonInfo.saveData(requireContext(), id_person, false);
+                            JsonUtils.saveID(requireContext(), id_person);
+                            JsonUtils.saveEntry(requireContext(), false);
                             // Запускаем новую активность
                             startActivity(intent);
                         } else {
