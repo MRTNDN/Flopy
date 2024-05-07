@@ -17,6 +17,64 @@
     <string name="login_method2">VK</string>
     <string name="login_method3">Login</string>
 
+    <string-array name="gender_array">
+        <item>Мужской</item>
+        <item>Женский</item>
+        <item>Не выбрано</item>
+    </string-array>
+
+    <string-array name="target_array">
+        <item><b>Дружба</b>\nНайти друзей и знакомых</item>
+        <item><b>Свидания</b>\nХодить на свидания и хорошо\nпроводить время</item>
+        <item><b>Отношения</b>\nНайти вторую половинку</item>
+        <item><b>Общение без конкретики</b>\nОбщяться, делиться мыслями</item>
+    </string-array>
+
+    <string-array name="zodiac_sign_array">
+        <item>Овен</item>
+        <item>Телец</item>
+        <item>Близнецы</item>
+        <item>Рак</item>
+        <item>Лев</item>
+        <item>Дева</item>
+        <item>Весы</item>
+        <item>Скорпион</item>
+        <item>Стрелец</item>
+        <item>Козерог</item>
+        <item>Водолей</item>
+        <item>Рыбы</item>
+        <item>Не выбрано</item>
+    </string-array>
+
+    <string-array name="education_array">
+        <item>Среднее</item>
+        <item>Высшее</item>
+        <item>Аспирант/\nКандидат наук</item>
+        <item>Не выбрано</item>
+    </string-array>
+
+    <string-array name="children_array">
+        <item>Нет и не планирую</item>
+        <item>Нет, но хотелось бы</item>
+        <item>Уже есть</item>
+        <item>Не выбрано</item>
+    </string-array>
+
+    <string-array name="smoking_array">
+        <item>Резко негативно</item>
+        <item>Нейтрально</item>
+        <item>Положительно</item>
+        <item>Не выбрано</item>
+    </string-array>
+
+    <string-array name="alcohol_array">
+        <item>Резко негативно</item>
+        <item>Нейтрально</item>
+        <item>Положительно</item>
+        <item>Не выбрано</item>
+    </string-array>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

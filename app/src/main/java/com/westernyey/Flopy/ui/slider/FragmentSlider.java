@@ -6,16 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.ActivityMain;
 import com.westernyey.Flopy.ui.SettingsFragment;
 import com.westernyey.Flopy.ui.cardModel.Swap;
-import com.westernyey.Flopy.ui.menu.FiltersMenu;
 
 public class FragmentSlider extends Fragment {
 
@@ -37,15 +37,16 @@ public class FragmentSlider extends Fragment {
         Button btnOpenFil = rootView.findViewById(R.id.btn_open_filters);
 
         btnOpenMenu.setOnClickListener(v -> {
-            if (requireActivity() instanceof ActivityMain) {
-                ((ActivityMain) requireActivity()).openSidebarMenu();
+            DrawerLayout drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
+            if (drawerLayout != null) {
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
         btnOpenFil.setOnClickListener(v -> {
-            FiltersMenu filtersMenu = new FiltersMenu();
-            filtersMenu.show(getParentFragmentManager(), filtersMenu.getTag());
-                });
+            Fragment fragment = new SettingsFragment();
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+        });
 
         btnOpenSet.setOnClickListener(v -> {
             Fragment fragment = new SettingsFragment();

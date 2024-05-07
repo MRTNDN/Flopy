@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.slider.FragmentSlider;
 import com.westernyey.Flopy.ui.profile.FragmentProfile;
+import com.westernyey.Flopy.ui.slider.FragmentSlider;
 
 public class Sidebar_Menu extends Fragment {
 
@@ -35,7 +35,7 @@ public class Sidebar_Menu extends Fragment {
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
-            DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
@@ -45,7 +45,7 @@ public class Sidebar_Menu extends Fragment {
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
-            DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
@@ -55,7 +55,7 @@ public class Sidebar_Menu extends Fragment {
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
-            DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
 
@@ -65,7 +65,7 @@ public class Sidebar_Menu extends Fragment {
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 
             // Закрываем боковое меню
-            DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         });
         return rootView;

@@ -8,20 +8,23 @@
 
     <!-- Контейнер фона -->
 
-    <FrameLayout
-        android:id="@+id/background_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_color">
 
-        <!-- Контейнер для содержимого, который будет под кнопками -->
-    </FrameLayout>
 
     <!-- Сайдбар -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/swap_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_open_filters" />
 
         <Button
             android:id="@+id/btn_open_menu"
@@ -56,16 +59,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <FrameLayout
-            android:id="@+id/swap_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_open_filters" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <include-->
+<!--        layout="@layout/filters_menu"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:visibility="visible" />-->
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

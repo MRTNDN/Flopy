@@ -23,12 +23,22 @@ public class FragmentProfile extends Fragment {
         // Инициализация кнопок и бокового меню
         Button btnOpenMenu = rootView.findViewById(R.id.btn_open_menu);
         Button btnOpenSet = rootView.findViewById(R.id.btn_open_settings);
-        DrawerLayout drawerLayout = rootView.findViewById(R.id.drawer_layouts);
+        Button btnOpenProfSett = rootView.findViewById(R.id.btn_open_profile_settings);
 
-        btnOpenMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+        btnOpenMenu.setOnClickListener(v -> {
+            DrawerLayout drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
+            if (drawerLayout != null) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         btnOpenSet.setOnClickListener(v -> {
             Fragment fragment = new SettingsFragment();
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+        });
+
+        btnOpenProfSett.setOnClickListener(v -> {
+            Fragment fragment = new FragmentProfileSettings();
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
         });
         return rootView;
