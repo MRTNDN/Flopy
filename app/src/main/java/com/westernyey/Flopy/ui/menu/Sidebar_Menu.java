@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.profile.FragmentProfile;
@@ -51,12 +52,13 @@ public class Sidebar_Menu extends Fragment {
 
         btn_massage.setOnClickListener(v -> {
             // Обработка нажатия на кнопку btn_massage
-            Fragment fragment = new FragmentProfile();
-            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
-
-            // Закрываем боковое меню
-            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
+            DataUtils.saveUserId(requireContext(), 0);
+//            Fragment fragment = new FragmentProfile();
+//            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+//
+//            // Закрываем боковое меню
+//            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
+//            drawer.closeDrawer(GravityCompat.START);
         });
 
         btn_main.setOnClickListener(v -> {

@@ -10,12 +10,8 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
-import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class FragmentRegister extends Fragment {
@@ -39,7 +35,7 @@ public class FragmentRegister extends Fragment {
             if (!new_email.getText().toString().isEmpty() && !pas1.getText().toString().isEmpty() && !pas2.getText().toString().isEmpty()) {
                 if (pas1.getText().toString().length() >= 1 && pas2.getText().toString().length() >= 1) {
                     if (pas1.getText().toString().equals(pas2.getText().toString())) {
-                        new RequestUtils(FragmentRegister.this, "entry_email", "POST", "{\"email\": \"" + new_email.getText().toString() + "\"}").execute();
+//                        new RequestUtils(FragmentRegister.this, "entry_email", "POST", "{\"email\": \"" + new_email.getText().toString() + "\"}").execute();
                         new android.os.Handler().postDelayed(
                                 () -> {
                                     if (status){
@@ -78,16 +74,16 @@ public class FragmentRegister extends Fragment {
         return rootView;
     }
 
-    // Метод для обновления данных
-    public void updateData(String result) {
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-            this.code = jsonObject.getInt("code");
-            this.status = jsonObject.getBoolean("status");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    // Метод для обновления данных
+//    public void updateData(String result) {
+//        try {
+//            JSONObject jsonObject = new JSONObject(result);
+//            this.code = jsonObject.getInt("code");
+//            this.status = jsonObject.getBoolean("status");
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public void handleEmptyResponse() {
         ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново");

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,11 +45,21 @@ public class FragmentProfileSettings extends Fragment {
         editAboutMe = rootView.findViewById(R.id.edit_about_me);
         btnAddAboutMe = rootView.findViewById(R.id.btn_add_about_me);
         containerAboutMe = rootView.findViewById(R.id.container_about_me);
+        ImageView photo1 = rootView.findViewById(R.id.image1);
+        ImageView photo2 = rootView.findViewById(R.id.image2);
+        ImageView photo3 = rootView.findViewById(R.id.image3);
+        ImageView photo4 = rootView.findViewById(R.id.image4);
+        photo1.setImageResource(R.color.castom_red);
+        photo2.setImageResource(R.color.light_blue_600);
+        photo3.setImageResource(R.color.purple_200);
+        photo4.setImageResource(R.color.yelloww);
+
 
         // Спинер полов
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.gender_array, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
+
         spinnerGender.setAdapter(adapter);
         spinnerGender.setSelection(2); // "Не выбрано"
 

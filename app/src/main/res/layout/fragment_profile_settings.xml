@@ -15,8 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/rounded_rectangle">
+            android:background="@drawable/rounded_rectangle_white">
 
+            <!-- Кнопка назад -->
             <Button
                 android:id="@+id/btn_bac"
                 android:layout_width="45dp"
@@ -30,6 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
+            <!-- % заполниности -->
             <TextView
                 android:id="@+id/percent_of_full"
                 android:layout_width="wrap_content"
@@ -42,22 +44,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btn_bac" />
 
+            <!-- Основное -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_rectangle_grey"
+                android:layout_margin="10dp"
+                android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_bac">
 
-                <!-- Основное -->
+                <!-- Надпись основное -->
 
                 <TextView
                     android:id="@+id/text_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:text="Основное"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -79,11 +83,12 @@
                     app:layout_constraintTop_toBottomOf="@id/text_main"
                     tools:ignore="HardcodedText" />
 
+                <!-- Ввод имени -->
                 <EditText
                     android:id="@+id/edit_name"
-                    android:layout_width="250dp"
+                    android:layout_width="220dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/edit_text_background_white"
+                    android:background="@drawable/rounded_rectangle_white"
                     android:gravity="center_vertical|center_horizontal"
                     android:hint="Введите имя"
                     android:padding="0dp"
@@ -94,7 +99,8 @@
                     app:layout_constraintEnd_toEndOf="@+id/edit_age"
                     app:layout_constraintStart_toStartOf="@+id/edit_age"
                     app:layout_constraintTop_toTopOf="@+id/text_name"
-                    tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck"
+                    android:inputType="text" />
 
                 <!-- Возраст -->
                 <TextView
@@ -110,13 +116,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_name"
                     tools:ignore="HardcodedText" />
 
+                <!-- Ввод возроста -->
                 <EditText
                     android:id="@+id/edit_age"
-                    android:layout_width="250dp"
+                    android:layout_width="220dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/edit_text_background_white"
+                    android:background="@drawable/rounded_rectangle_white"
                     android:gravity="center_vertical|center_horizontal"
                     android:hint="Введите возраст"
                     android:padding="0dp"
@@ -127,7 +133,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/text_age"
                     app:layout_constraintTop_toTopOf="@+id/text_age"
-                    tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck"
+                    android:inputType="text" />
 
                 <!-- Пол -->
                 <TextView
@@ -142,11 +149,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_age"
                     tools:ignore="HardcodedText" />
 
+                <!-- Выбор полов -->
                 <Spinner
                     android:id="@+id/spinner_gender"
-                    android:layout_width="250dp"
+                    android:layout_width="220dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/edit_text_background_white"
+                    android:background="@drawable/rounded_rectangle_white"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="0dp"
                     android:spinnerMode="dropdown"
@@ -160,19 +168,84 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Мои фото -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_rectangle_grey"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayoutMain"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayoutMain"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutMain">
+
+                <!-- Надпись Мои фото -->
+                <TextView
+                    android:id="@+id/text_targets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мои фото"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="180dp"
+                    android:layout_height="320dp"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintStart_toStartOf="@+id/text_targets"
+                    app:layout_constraintTop_toBottomOf="@+id/text_targets" />
+
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/image1"
+                    app:layout_constraintTop_toTopOf="@+id/image1" />
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toTopOf="@+id/image4"
+                    app:layout_constraintEnd_toEndOf="@+id/image2"
+                    app:layout_constraintStart_toStartOf="@+id/image2"
+                    app:layout_constraintTop_toBottomOf="@+id/image2" />
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/image1"
+                    app:layout_constraintEnd_toEndOf="@+id/image3"
+                    app:layout_constraintStart_toStartOf="@+id/image3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Цель -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutTarget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutMain">
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_rectangle_grey"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayoutPhoto"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayoutPhoto"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutPhoto">
 
-                <!-- Цель -->
+                <!-- Надпись Цель -->
                 <TextView
                     android:id="@+id/text_target"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:text="Я ищу здесь"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -181,12 +254,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="HardcodedText" />
 
+                <!-- Выбор цели -->
                 <Spinner
                     android:id="@+id/spinner_target"
                     android:layout_width="300dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_background_white"
+                    android:background="@drawable/rounded_rectangle_white"
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="0dp"
                     android:spinnerMode="dropdown"
@@ -199,19 +273,23 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- О себе -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutAboutMe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_rectangle_grey"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayoutTarget"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayoutTarget"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayoutTarget">
 
-                <!-- О себе -->
+                <!-- Надпись о себе -->
                 <TextView
                     android:id="@+id/text_about_me"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:text="О себе"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -220,6 +298,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="HardcodedText" />
 
+                <!-- Уточнение -->
                 <TextView
                     android:id="@+id/text_info"
                     android:layout_width="wrap_content"
@@ -233,23 +312,25 @@
                     app:layout_constraintTop_toTopOf="@+id/text_about_me"
                     tools:ignore="HardcodedText" />
 
+                <!-- Ввод текста о себе -->
                 <EditText
                     android:id="@+id/edit_about_me"
-                    android:layout_width="300dp"
+                    android:layout_width="270dp"
                     android:layout_height="30dp"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_background_white"
+                    android:background="@drawable/rounded_rectangle_white"
                     android:gravity="center_vertical|center_horizontal"
                     android:hint="Я люблю клубнику в шоколаде"
+                    android:inputType="text"
                     android:padding="0dp"
                     android:textColor="#000000"
                     android:textColorHint="@color/grey"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/text_about_me"
                     app:layout_constraintTop_toBottomOf="@+id/text_about_me"
-                    tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck" />
 
+                <!-- Кнопка добавить запись -->
                 <Button
                     android:id="@+id/btn_add_about_me"
                     android:layout_width="30dp"
@@ -265,13 +346,12 @@
                     android:id="@+id/container_about_me"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_about_me"></LinearLayout>
+                    app:layout_constraintStart_toStartOf="@+id/edit_about_me"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_about_me" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -280,6 +360,11 @@
                 android:id="@+id/constraintLayoutBasic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_rectangle_grey"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayoutAboutMe"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayoutAboutMe"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayoutAboutMe">
 
                 <!-- Дополнительно -->
@@ -287,8 +372,6 @@
                     android:id="@+id/text_basic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:text="Дополнительно"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -307,9 +390,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_basic">
 
                     <ImageView
+                        android:id="@+id/imageView3"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_sity"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -320,12 +403,12 @@
                         android:id="@+id/text_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
                         android:layout_marginTop="5dp"
                         android:text="Город"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/edit_city"
+                        app:layout_constraintStart_toEndOf="@+id/imageView3"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -334,10 +417,10 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:hint="Введите город"
+                        android:inputType="text"
                         android:padding="0dp"
                         android:textColor="#000000"
                         android:textColorHint="@color/grey"
@@ -358,9 +441,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutCity">
 
                     <ImageView
+                        android:id="@+id/imageView4"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_ruler"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -371,12 +454,11 @@
                         android:id="@+id/text_height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
                         android:layout_marginTop="5dp"
                         android:text="Рост"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -385,10 +467,10 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:hint="Введите рост"
+                        android:inputType="text"
                         android:padding="0dp"
                         android:textColor="#000000"
                         android:textColorHint="@color/grey"
@@ -409,9 +491,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHeight">
 
                     <ImageView
+                        android:id="@+id/imageView5"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_zadiac_sign"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -422,12 +504,12 @@
                         android:id="@+id/text_zadiac_sign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
+                        android:layout_marginStart="-20dp"
                         android:layout_marginTop="5dp"
                         android:text="Знак зодиака"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView5"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -436,8 +518,7 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:padding="0dp"
                         android:spinnerMode="dropdown"
@@ -459,9 +540,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutZadiacSign">
 
                     <ImageView
+                        android:id="@+id/imageView6"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_book"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -472,12 +553,12 @@
                         android:id="@+id/text_education"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
+                        android:layout_marginStart="-20dp"
                         android:layout_marginTop="5dp"
                         android:text="Образование"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView6"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -486,8 +567,7 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:padding="0dp"
                         android:spinnerMode="dropdown"
@@ -509,9 +589,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutEducation">
 
                     <ImageView
+                        android:id="@+id/imageView7"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_toy"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -522,12 +602,11 @@
                         android:id="@+id/text_children"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
                         android:layout_marginTop="5dp"
                         android:text="Дети"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView7"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -536,8 +615,7 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:padding="0dp"
                         android:spinnerMode="dropdown"
@@ -559,9 +637,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutChildren">
 
                     <ImageView
+                        android:id="@+id/imageView8"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_smoking"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -572,12 +650,12 @@
                         android:id="@+id/text_smoking"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
                         android:layout_marginTop="5dp"
                         android:text="Курение"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/spinner_smoking"
+                        app:layout_constraintStart_toEndOf="@+id/imageView8"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -586,8 +664,7 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:padding="0dp"
                         android:spinnerMode="dropdown"
@@ -609,9 +686,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutSmoking">
 
                     <ImageView
+                        android:id="@+id/imageView9"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="25dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/basic_alcohol"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -622,12 +699,12 @@
                         android:id="@+id/text_alcohol"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
                         android:layout_marginTop="5dp"
                         android:text="Алкоголь"
                         android:textColor="@color/dark_grey"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/spinner_alcohol"
+                        app:layout_constraintStart_toEndOf="@+id/imageView9"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="HardcodedText" />
 
@@ -636,8 +713,7 @@
                         android:layout_width="270dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/edit_text_background_white"
+                        android:background="@drawable/rounded_rectangle_white"
                         android:gravity="center_vertical|center_horizontal"
                         android:padding="0dp"
                         android:spinnerMode="dropdown"

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
-import com.cripochec.Flopy.ui.utils.JsonUtils.JsonUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
@@ -26,7 +26,7 @@ import org.json.JSONObject;
 public class FragmentLogin extends Fragment {
 
     private int id_person;
-    private boolean status;
+    private int status;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,22 +41,33 @@ public class FragmentLogin extends Fragment {
             // Обработка нажатия на кнопку but_login
             String enteredEmail = email.getText().toString();
             String enteredPassword = password.getText().toString();
-            new RequestUtils(FragmentLogin.this, "check_person", "POST", "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}").execute();
+
+            new RequestUtils(this, "entry_person", "POST",
+                    "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}", callback).execute();
+
             new android.os.Handler().postDelayed(
                     () -> {
-                        if (status){
+                        if (status == 0){
                             Intent intent = new Intent(requireContext(), ActivityMain.class);
-                            JsonUtils.saveID(requireContext(), id_person);
-                            JsonUtils.saveEntry(requireContext(), false);
+                            DataUtils.saveUserId(requireContext(), id_person);
+                            DataUtils.saveEntry(requireContext(), false);
                             // Запускаем новую активность
                             startActivity(intent);
-                        } else {
+                        } else if (status == 1){
+                            ToastUtils.showShortToast(getContext(), "email не найден");
+                            email.setText("");
+                            password.setText("");
+                        } else if (status == 2){
                             ToastUtils.showShortToast(getContext(), "Неверный логин или пароль");
+                            email.setText("");
+                            password.setText("");
+                        } else if (status == 3){
+                            handleEmptyResponse();
                             email.setText("");
                             password.setText("");
                         }
                     },
-                    2000
+                    250
             );
         });
 
@@ -69,16 +80,19 @@ public class FragmentLogin extends Fragment {
     }
 
 
-    // Метод для обновления данных
-    public void updateData(String result) {
+    RequestUtils.Callback callback = (fragment, result) -> {
+        // Обработка ответа
         try {
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getBoolean("status");
-            this.id_person = jsonObject.getInt("id_person");
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                this.id_person = jsonObject.getInt("id_person");
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-    }
+    };
+
 
     public void handleEmptyResponse() {
         ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново");
