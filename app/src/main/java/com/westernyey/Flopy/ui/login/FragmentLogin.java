@@ -25,15 +25,17 @@ import org.json.JSONObject;
 
 public class FragmentLogin extends Fragment {
 
-    private int id_person;
+    private EditText email;
+    private EditText password;
     private int status;
+
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        EditText email = rootView.findViewById(R.id.editEmail);
-        EditText password = rootView.findViewById(R.id.editPassword);
+        email = rootView.findViewById(R.id.editEmail);
+        password = rootView.findViewById(R.id.editPassword);
         Button but_login = rootView.findViewById(R.id.buttonLogin);
         TextView but_register = rootView.findViewById(R.id.textRegister);
 
@@ -41,34 +43,14 @@ public class FragmentLogin extends Fragment {
             // Обработка нажатия на кнопку but_login
             String enteredEmail = email.getText().toString();
             String enteredPassword = password.getText().toString();
+            if (!enteredEmail.isEmpty() && !enteredPassword.isEmpty()){
+                new RequestUtils(this, "entry_person", "POST",
+                        "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}", callback).execute();
+            } else {
+                ToastUtils.showShortToast(getContext(), "Все поля должны быть заполнены");
+                clearEditText();
+            }
 
-            new RequestUtils(this, "entry_person", "POST",
-                    "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}", callback).execute();
-
-            new android.os.Handler().postDelayed(
-                    () -> {
-                        if (status == 0){
-                            Intent intent = new Intent(requireContext(), ActivityMain.class);
-                            DataUtils.saveUserId(requireContext(), id_person);
-                            DataUtils.saveEntry(requireContext(), false);
-                            // Запускаем новую активность
-                            startActivity(intent);
-                        } else if (status == 1){
-                            ToastUtils.showShortToast(getContext(), "email не найден");
-                            email.setText("");
-                            password.setText("");
-                        } else if (status == 2){
-                            ToastUtils.showShortToast(getContext(), "Неверный логин или пароль");
-                            email.setText("");
-                            password.setText("");
-                        } else if (status == 3){
-                            handleEmptyResponse();
-                            email.setText("");
-                            password.setText("");
-                        }
-                    },
-                    250
-            );
         });
 
         but_register.setOnClickListener(v -> {
@@ -86,7 +68,21 @@ public class FragmentLogin extends Fragment {
             JSONObject jsonObject = new JSONObject(result);
             this.status = jsonObject.getInt("status");
             if (status == 0){
-                this.id_person = jsonObject.getInt("id_person");
+                int id_person = jsonObject.getInt("id_person");
+                Intent intent = new Intent(requireContext(), ActivityMain.class);
+                DataUtils.saveUserId(requireContext(), id_person);
+                DataUtils.saveEntry(requireContext(), false);
+                // Запускаем новую активность
+                startActivity(intent);
+            } else if (status == 1){
+//                getActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "email не найден"));
+                clearEditText();
+            } else if (status == 2){
+//                ToastUtils.showShortToast(getContext(), "Неверный логин или пароль");
+                clearEditText();
+            } else if (status == 3){
+                handleEmptyResponse();
+                clearEditText();
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -94,7 +90,13 @@ public class FragmentLogin extends Fragment {
     };
 
 
+    public void clearEditText() {
+        email.setText("");
+        password.setText("");
+    }
+
+
     public void handleEmptyResponse() {
-        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново");
+        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново."+ "\nКод: "+status);
     }
 }

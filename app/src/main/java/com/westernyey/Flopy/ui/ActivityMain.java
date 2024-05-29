@@ -3,10 +3,14 @@ package com.westernyey.Flopy.ui;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.cripochec.Flopy.ui.utils.DataUtils;
+import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
+import com.westernyey.Flopy.ui.profile.FragmentProfileSettings;
 import com.westernyey.Flopy.ui.slider.FragmentSlider;
 
 public class ActivityMain extends AppCompatActivity {
@@ -27,5 +31,11 @@ public class ActivityMain extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fr_activity_main, new FragmentSlider());
 
         fragmentTransaction.commit();
+
+        boolean entry = DataUtils.getEntry(this);
+        if (entry){
+            Fragment fragment = new FragmentProfileSettings();
+            FragmentUtils.replaceFragment(this.getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+        }
     }
 }

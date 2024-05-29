@@ -8,6 +8,7 @@ public class DataUtils {
     private static final String KEY_ID = "userId";
     private static final String ENTRY = "entry";
     private static final String THEME = "theme";
+    private static final String FULLNESS = "fullness";
 
 //    id
     public static void saveUserId(Context context, int userId) {
@@ -47,4 +48,18 @@ public class DataUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean(THEME, false); // Возвращаем false если идентификатор не найден
     }
+
+//    Заполниность профиля
+    public static void saveFullness(Context context, int fullness) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(FULLNESS, fullness);
+        editor.apply();
+    }
+
+    public static int getFullness(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(FULLNESS, 0); // Возвращаем 0 если идентификатор не найден
+    }
+
 }

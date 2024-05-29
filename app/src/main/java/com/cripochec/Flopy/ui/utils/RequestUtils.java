@@ -9,7 +9,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.Call;
-// import okhttp3.*; //  Эта строка лишняя, так как уже импортировали отдельные классы
+
 
 public class RequestUtils {
     private final OkHttpClient client = new OkHttpClient();
@@ -29,7 +29,7 @@ public class RequestUtils {
 
     public void execute() {
 //        локалка
-        String URL_SERVER = "http://192.168.0.101:5000/" + requestLine;
+        String URL_SERVER = "http://192.168.0.102:5000/" + requestLine;
 
 //        сервер
 //        String URL_SERVER = "http://90.156.231.211:5000/" + requestLine;

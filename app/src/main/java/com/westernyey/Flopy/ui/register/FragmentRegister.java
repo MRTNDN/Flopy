@@ -10,15 +10,19 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
+import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class FragmentRegister extends Fragment {
 
     // Переменные для хранения данных
     private int code;
-    private boolean status;
+    private int status;
 
 
     @Override
@@ -33,12 +37,14 @@ public class FragmentRegister extends Fragment {
         // Обработка нажатия на кнопку but_register
         but_register.setOnClickListener(v -> {
             if (!new_email.getText().toString().isEmpty() && !pas1.getText().toString().isEmpty() && !pas2.getText().toString().isEmpty()) {
-                if (pas1.getText().toString().length() >= 1 && pas2.getText().toString().length() >= 1) {
+                if (pas1.getText().toString().length() >= 8 && pas2.getText().toString().length() >= 8) {
                     if (pas1.getText().toString().equals(pas2.getText().toString())) {
-//                        new RequestUtils(FragmentRegister.this, "entry_email", "POST", "{\"email\": \"" + new_email.getText().toString() + "\"}").execute();
+                        new RequestUtils(this, "register_person", "POST",
+                                "{\"email\": \"" + new_email.getText().toString() + "\"}", callback).execute();
+
                         new android.os.Handler().postDelayed(
                                 () -> {
-                                    if (status){
+                                    if (status == 0){
                                         Fragment fragment = new FragmentRegisterCode();
                                         Bundle bundle = new Bundle();
                                         bundle.putInt("code", code);
@@ -46,14 +52,19 @@ public class FragmentRegister extends Fragment {
                                         bundle.putString("password", pas1.getText().toString());
                                         fragment.setArguments(bundle);
                                         FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment);
+                                    } else if (status == 1){
+                                        ToastUtils.showShortToast(getContext(), "Данный email уже занят");
+                                        new_email.setText("");
+                                        pas1.setText("");
+                                        pas2.setText("");
                                     } else {
-                                        ToastUtils.showShortToast(getContext(), "Данный email уже зарегистрирован");
+                                        handleEmptyResponse();
                                         new_email.setText("");
                                         pas1.setText("");
                                         pas2.setText("");
                                     }
                                 },
-                                2000
+                                250
                         );
                     } else {
                         ToastUtils.showShortToast(getContext(), "Пароли не совпадают");
@@ -74,18 +85,22 @@ public class FragmentRegister extends Fragment {
         return rootView;
     }
 
-//    // Метод для обновления данных
-//    public void updateData(String result) {
-//        try {
-//            JSONObject jsonObject = new JSONObject(result);
-//            this.code = jsonObject.getInt("code");
-//            this.status = jsonObject.getBoolean("status");
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+
+    RequestUtils.Callback callback = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                this.code = jsonObject.getInt("code");
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
 
     public void handleEmptyResponse() {
-        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново");
+        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново. "+ "\nКод: "+status);
     }
 }
