@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
@@ -79,10 +80,6 @@ public class FragmentProfileSettings extends Fragment {
         ImageView photo3 = rootView.findViewById(R.id.image3);
         ImageView photo4 = rootView.findViewById(R.id.image4);
 
-
-
-
-        saveEntry(requireContext(), true);
         String imageUrl = "https://sun9-76.userapi.com/impg/rY4GWtRZHZsFs-PimjJJ9BRKDIZgFN8k_ZkEAg/IbDakXTl3MU.jpg?size=900x900&quality=96&sign=94c2de887e911cc8f089d75647b9cf64&c_uniq_tag=vxwB27avAu-ESkB25Sdgg24aKaRz0aJ1qr1816Zj_Oc&type=album";
 
         Glide.with(this)
@@ -92,6 +89,8 @@ public class FragmentProfileSettings extends Fragment {
         photo2.setImageResource(R.color.light_blue_600);
         photo3.setImageResource(R.color.purple_200);
         photo4.setImageResource(R.color.yelloww);
+
+        new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetData).execute();
 
 // Спинеры слушатели
         editName.addTextChangedListener(new TextWatcher() {
@@ -315,21 +314,9 @@ public class FragmentProfileSettings extends Fragment {
         btnBac.setOnClickListener(v -> {
         });
 
-        btnOk.setOnClickListener(v -> {
-            getData();
-//            new android.os.Handler().postDelayed(
-//                    () -> {
-//                        if (status == 0){
-//                            saveEntry(requireContext(), false);
-//                            Fragment fragment = new FragmentSlider();
-//                            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
-//                        } else {
-//                        }
-//                    },
-//                    5000
-//            );
 
-        });
+        btnOk.setOnClickListener(v -> getData());
+
 
         btnAddAboutMe.setOnClickListener(v -> {
             if (count < 3) {
@@ -359,18 +346,62 @@ public class FragmentProfileSettings extends Fragment {
         try {
             String name = editName.getText().toString();
             String age = editAge.getText().toString();
+
             String gender = spinnerGender.getSelectedItem().toString();
+            int id_gender = 0;
+            if (gender.equals("Мужской")){id_gender = 1;}
+            if (gender.equals("Женский")){id_gender = 2;}
+
             String target = spinnerTarget.getSelectedItem().toString();
+            int id_target = 0;
+            if (target.equals("<b>Свидания</b>\\nХодить на свидания и хорошо\\nпроводить время")){id_target = 1;}
+            if (target.equals("<b>Отношения</b>\\nНайти вторую половинку")){id_target = 2;}
+            if (target.equals("<b>Общение без конкретики</b>\\nОбщяться, делиться мыслями")){id_target = 3;}
+
             String city = editCity.getText().toString();
             String height = editHeight.getText().toString();
+
             String zodiacSign = spinnerZodiacSign.getSelectedItem().toString();
+            int id_zodiacSign = 0;
+            if (zodiacSign.equals("Овен")){id_zodiacSign = 1;}
+            if (zodiacSign.equals("Телец")){id_zodiacSign = 2;}
+            if (zodiacSign.equals("Близнецы")){id_zodiacSign = 3;}
+            if (zodiacSign.equals("Рак")){id_zodiacSign = 4;}
+            if (zodiacSign.equals("Лев")){id_zodiacSign = 5;}
+            if (zodiacSign.equals("Дева")){id_zodiacSign = 6;}
+            if (zodiacSign.equals("Весы")){id_zodiacSign = 7;}
+            if (zodiacSign.equals("Скорпион")){id_zodiacSign = 8;}
+            if (zodiacSign.equals("Стрелец")){id_zodiacSign = 9;}
+            if (zodiacSign.equals("Козерог")){id_zodiacSign = 10;}
+            if (zodiacSign.equals("Водолей")){id_zodiacSign = 11;}
+            if (zodiacSign.equals("Рыбы")){id_zodiacSign = 12;}
+
             String education = spinnerEducation.getSelectedItem().toString();
+            int id_education = 0;
+            if (education.equals("Среднее")){id_education = 1;}
+            if (education.equals("Высшее")){id_education = 2;}
+            if (education.equals("Аспирант/\nКандидат наук")){id_education = 3;}
+
             String children = spinnerChildren.getSelectedItem().toString();
+            int id_children = 0;
+            if (children.equals("Нет и не планирую")){id_children = 1;}
+            if (children.equals("Нет, но хотелось бы")){id_children = 2;}
+            if (children.equals("Уже есть")){id_children = 3;}
+
             String smoking = spinnerSmoking.getSelectedItem().toString();
+            int id_smoking = 0;
+            if (smoking.equals("Резко негативно")){id_smoking = 1;}
+            if (smoking.equals("Нейтрально")){id_smoking = 2;}
+            if (smoking.equals("Положительно")){id_smoking = 3;}
+
             String alcohol = spinnerAlcohol.getSelectedItem().toString();
+            int id_alcohol = 0;
+            if (alcohol.equals("Резко негативно")){id_alcohol = 1;}
+            if (alcohol.equals("Нейтрально")){id_alcohol = 2;}
+            if (alcohol.equals("Положительно")){id_alcohol = 3;}
 
             if (name.isEmpty() || age.isEmpty() || gender.isEmpty()){
-                ToastUtils.showShortToast(getContext(), "все основные поля должны быть заполнены");
+                ToastUtils.showShortToast(getContext(), "все основные и хотя бы 1 поле о себе должны быть заполнены");
                 return;
             }
 
@@ -378,18 +409,19 @@ public class FragmentProfileSettings extends Fragment {
             jsonRequestBody.put("id_person", getUserId(requireContext()));
             jsonRequestBody.put("name", name);
             jsonRequestBody.put("age", age);
-            jsonRequestBody.put("gender", gender);
-            jsonRequestBody.put("target", target);
+            jsonRequestBody.put("id_gender", id_gender);
+            jsonRequestBody.put("id_target", id_target);
             jsonRequestBody.put("about_me", getDataAboutMe());
             jsonRequestBody.put("city", city);
             jsonRequestBody.put("height", height);
-            jsonRequestBody.put("zodiac_sign", zodiacSign);
-            jsonRequestBody.put("education", education);
-            jsonRequestBody.put("children", children);
-            jsonRequestBody.put("smoking", smoking);
-            jsonRequestBody.put("alcohol", alcohol);
+            jsonRequestBody.put("id_zodiac_sign", id_zodiacSign);
+            jsonRequestBody.put("id_education", id_education);
+            jsonRequestBody.put("id_children", id_children);
+            jsonRequestBody.put("id_smoking", id_smoking);
+            jsonRequestBody.put("id_alcohol", id_alcohol);
 
             new RequestUtils(this, "save_persons_info", "POST", jsonRequestBody.toString(), callbackGetData).execute();
+
         } catch (Exception e) {
             e.printStackTrace();
             ToastUtils.showShortToast(getContext(), "Данные не сохранены!");
@@ -412,7 +444,13 @@ public class FragmentProfileSettings extends Fragment {
                 }
             }
         }
-        list.remove(list.size() - 1);
+        if (list.isEmpty()){
+            list.add("");
+        } else {
+            list.remove(list.size() - 1);
+        }
+
+
         // Преобразуем список в JSON строку
         JSONArray jsonArray = new JSONArray(list);
         return jsonArray.toString();
@@ -475,9 +513,49 @@ public class FragmentProfileSettings extends Fragment {
         try {
             JSONObject jsonObject = new JSONObject(result);
             this.status = jsonObject.getInt("status");
+            if (status == 0){
+                saveEntry(requireContext(), false);
+                fragment = new FragmentProfile();
+                FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            } else {
+                handleEmptyResponse();
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     };
+
+    RequestUtils.Callback callbackSetData = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+//                editName.setText(jsonObject.getString("name"));
+//                editAge.setText(jsonObject.getString("age"));
+                spinnerGender.setSelection(jsonObject.getInt("id_gender"));
+                spinnerTarget.setSelection(jsonObject.getInt("id_target"));
+                // О себе тут | список "about_me"
+//                editCity.setText(jsonObject.getString("city"));
+//                editHeight.setText(jsonObject.getString("height"));
+                spinnerZodiacSign.setSelection(jsonObject.getInt("id_zodiac_sign"));
+                spinnerEducation.setSelection(jsonObject.getInt("id_education"));
+                spinnerChildren.setSelection(jsonObject.getInt("id_children"));
+                spinnerSmoking.setSelection(jsonObject.getInt("id_smoking"));
+                spinnerAlcohol.setSelection(jsonObject.getInt("id_alcohol"));
+            } else {
+                handleEmptyResponse();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
+
+    // Обработка пустого ответа от сервера
+    public void handleEmptyResponse() {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
+                "Ошибка сервера, попробуйте заново."+ "\nКод: "+status)); // Показываем сообщение об ошибке
+    }
 }
 

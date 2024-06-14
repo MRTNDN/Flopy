@@ -22,81 +22,90 @@ import com.westernyey.Flopy.ui.register.FragmentRegister;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class FragmentLogin extends Fragment {
 
-    private EditText email;
-    private EditText password;
-    private int status;
-
+    private EditText email; // Поле для ввода email
+    private EditText password; // Поле для ввода пароля
+    private int status; // Переменная для хранения статуса ответа сервера
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Инициализация интерфейса фрагмента
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        email = rootView.findViewById(R.id.editEmail);
-        password = rootView.findViewById(R.id.editPassword);
-        Button but_login = rootView.findViewById(R.id.buttonLogin);
-        TextView but_register = rootView.findViewById(R.id.textRegister);
+        email = rootView.findViewById(R.id.editEmail); // Находим поле для ввода email
+        password = rootView.findViewById(R.id.editPassword); // Находим поле для ввода пароля
+        Button but_login = rootView.findViewById(R.id.buttonLogin); // Находим кнопку для входа
+        TextView but_register = rootView.findViewById(R.id.textRegister); // Находим текст для перехода к регистрации
 
         but_login.setOnClickListener(v -> {
             // Обработка нажатия на кнопку but_login
-            String enteredEmail = email.getText().toString();
-            String enteredPassword = password.getText().toString();
+            String enteredEmail = email.getText().toString(); // Получаем введенный email
+            String enteredPassword = password.getText().toString(); // Получаем введенный пароль
+
             if (!enteredEmail.isEmpty() && !enteredPassword.isEmpty()){
+                // Отправляем запрос на сервер для входа
                 new RequestUtils(this, "entry_person", "POST",
                         "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}", callback).execute();
             } else {
+                // Показываем сообщение об ошибке, если поля пусты
                 ToastUtils.showShortToast(getContext(), "Все поля должны быть заполнены");
-                clearEditText();
+                clearEditText(); // Очищаем поля ввода
             }
-
         });
 
         but_register.setOnClickListener(v -> {
             // Обработка нажатия на кнопку but_register
-            Fragment fragment = new FragmentRegister();
-            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment);
+            Fragment fragment = new FragmentRegister(); // Создаем новый фрагмент для регистрации
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment); // Заменяем текущий фрагмент на фрагмент регистрации
         });
-        return rootView;
+
+        return rootView; // Возвращаем корневой вид фрагмента
     }
 
-
+    // Обработка ответа от сервера
     RequestUtils.Callback callback = (fragment, result) -> {
-        // Обработка ответа
         try {
+            // Получение JSON объекта из ответа сервера
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getInt("status");
+            this.status = jsonObject.getInt("status"); // Получаем статус из ответа
+
             if (status == 0){
-                int id_person = jsonObject.getInt("id_person");
-                Intent intent = new Intent(requireContext(), ActivityMain.class);
-                DataUtils.saveUserId(requireContext(), id_person);
-                DataUtils.saveEntry(requireContext(), false);
-                // Запускаем новую активность
-                startActivity(intent);
+                // Если статус 0, вход успешен
+                int id_person = jsonObject.getInt("id_person"); // Получаем ID пользователя
+                DataUtils.saveUserId(requireContext(), id_person); // Сохраняем ID пользователя
+                DataUtils.saveEntry(requireContext(), false); // Сохраняем информацию о входе
+
+                Intent intent = new Intent(requireContext(), ActivityMain.class); // Создаем интент для перехода в основную активность
+                startActivity(intent); // Запускаем основную активность
             } else if (status == 1){
-//                getActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "email не найден"));
-                clearEditText();
+                // Если статус 1, email не найден
+                requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "email не найден")); // Показываем сообщение об ошибке
+                clearEditText(); // Очищаем поля ввода
             } else if (status == 2){
-//                ToastUtils.showShortToast(getContext(), "Неверный логин или пароль");
-                clearEditText();
-            } else if (status == 3){
-                handleEmptyResponse();
-                clearEditText();
+                // Если статус 2, неверный логин или пароль
+                requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "Неверный логин или пароль")); // Показываем сообщение об ошибке
+                clearEditText(); // Очищаем поля ввода
+            } else {
+                // Во всех остальных случаях, ошибка сервера
+                handleEmptyResponse(); // Обрабатываем пустой ответ
+                clearEditText(); // Очищаем поля ввода
             }
         } catch (JSONException e) {
+            // Обрабатываем исключение JSON
             throw new RuntimeException(e);
         }
     };
 
-
+    // Очистка полей для ввода текста
     public void clearEditText() {
-        email.setText("");
-        password.setText("");
+        email.setText(""); // Очищаем поле email
+        password.setText(""); // Очищаем поле пароля
     }
 
-
+    // Обработка пустого ответа от сервера
     public void handleEmptyResponse() {
-        ToastUtils.showShortToast(getContext(), "Ошибка сервера, попробуйте заново."+ "\nКод: "+status);
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
+                "Ошибка сервера, попробуйте заново."+ "\nКод: "+status)); // Показываем сообщение об ошибке
     }
 }

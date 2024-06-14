@@ -30,9 +30,12 @@ public class ActivityMain extends AppCompatActivity {
         // Заменяем FragmentSlider в контейнере fr_activity_main
         fragmentTransaction.replace(R.id.fr_activity_main, new FragmentSlider());
 
+        // Применяем транзакцию
         fragmentTransaction.commit();
 
+        // Получение данных о первом входе пользователя из памяти телефона
         boolean entry = DataUtils.getEntry(this);
+        // Если entry true то переходим на фрагмент занесения информации о пользователе
         if (entry){
             Fragment fragment = new FragmentProfileSettings();
             FragmentUtils.replaceFragment(this.getSupportFragmentManager(), R.id.fr_activity_main, fragment);

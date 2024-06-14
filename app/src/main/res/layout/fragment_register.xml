@@ -10,6 +10,7 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".ui.register.FragmentRegister" >
 
+    <!-- Надпись "Регистрация" -->
     <TextView
         android:id="@+id/textViewLabel"
         android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Email -->
     <EditText
         android:id="@+id/editEmailRegister"
         android:layout_width="match_parent"
@@ -40,6 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewLabel"
         tools:ignore="VisualLintTextFieldSize" />
 
+    <!-- Пароль 1 -->
     <EditText
         android:id="@+id/editPassword1Register"
         android:layout_width="match_parent"
@@ -58,6 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editEmailRegister"
         tools:ignore="VisualLintTextFieldSize" />
 
+    <!-- Пароль 2 -->
     <EditText
         android:id="@+id/editPassword2Register"
         android:layout_width="match_parent"
@@ -74,6 +78,7 @@
         app:layout_constraintStart_toStartOf="@+id/editPassword1Register"
         app:layout_constraintTop_toBottomOf="@+id/editPassword1Register" />
 
+    <!-- Кнопка регистрации -->
     <Button
         android:id="@+id/buttonRegisterUser"
         android:layout_width="wrap_content"
@@ -90,6 +95,5 @@
         app:layout_constraintEnd_toEndOf="@+id/editPassword2Register"
         app:layout_constraintStart_toStartOf="@+id/editPassword2Register"
         app:layout_constraintTop_toBottomOf="@+id/editPassword2Register" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
