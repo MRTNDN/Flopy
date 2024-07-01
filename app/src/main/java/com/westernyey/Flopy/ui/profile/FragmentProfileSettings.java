@@ -2,6 +2,7 @@ package com.westernyey.Flopy.ui.profile;
 
 import static com.cripochec.Flopy.ui.utils.DataUtils.getUserId;
 import static com.cripochec.Flopy.ui.utils.DataUtils.saveEntry;
+import static com.cripochec.Flopy.ui.utils.DataUtils.saveFullness;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -25,7 +26,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
+import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
@@ -70,27 +71,35 @@ public class FragmentProfileSettings extends Fragment {
         editAge = rootView.findViewById(R.id.edit_age);
         editCity = rootView.findViewById(R.id.edit_city);
         editHeight = rootView.findViewById(R.id.edit_height);
-        fullnessTextView = rootView.findViewById(R.id.percent_of_full);
+        fullnessTextView = rootView.findViewById(R.id.name_and_age);
 
         Button btnAddAboutMe = rootView.findViewById(R.id.btn_add_about_me);
         containerAboutMe = rootView.findViewById(R.id.container_about_me);
 
+        // За каждое фото +8,5
         ImageView photo1 = rootView.findViewById(R.id.image1);
         ImageView photo2 = rootView.findViewById(R.id.image2);
         ImageView photo3 = rootView.findViewById(R.id.image3);
         ImageView photo4 = rootView.findViewById(R.id.image4);
 
-        String imageUrl = "https://sun9-76.userapi.com/impg/rY4GWtRZHZsFs-PimjJJ9BRKDIZgFN8k_ZkEAg/IbDakXTl3MU.jpg?size=900x900&quality=96&sign=94c2de887e911cc8f089d75647b9cf64&c_uniq_tag=vxwB27avAu-ESkB25Sdgg24aKaRz0aJ1qr1816Zj_Oc&type=album";
 
-        Glide.with(this)
-                .load(imageUrl)
-                .into(photo1);
-//        photo1.setImageResource(R.color.castom_red);
+//        String url1 = "https://belkiskastasarim.com.tr/uploads/yazilar/kucuk/yok.png";
+//        String url1 = "http://90.156.231.211/root/FlopyPhoto/yok.png";
+//        String url2 = "https://belkiskastasarim.com.tr/uploads/yazilar/kucuk/yok.png";
+//        String url3 = "https://your-server.com/path/to/image3.jpg";
+//        String url4 = "https://your-server.com/path/to/image4.jpg";
+
+//        Glide.with(this).load(url1).into(photo1);
+//        Glide.with(this).load(url2).into(photo2);
+//        Glide.with(this).load(url3).into(photo3);
+//        Glide.with(this).load(url4).into(photo4);
+
+
+
+        photo1.setImageResource(R.color.castom_red);
         photo2.setImageResource(R.color.light_blue_600);
         photo3.setImageResource(R.color.purple_200);
         photo4.setImageResource(R.color.yelloww);
-
-        new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetData).execute();
 
 // Спинеры слушатели
         editName.addTextChangedListener(new TextWatcher() {
@@ -105,9 +114,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (buf.isEmpty() && !String.valueOf(s).isEmpty()){
-                    fullness+=10;
+                    fullness+=8;
                 } else if (!buf.isEmpty() && String.valueOf(s).isEmpty()){
-                    fullness-=10;
+                    fullness-=8;
                 }
                 fullnessTextView.setText("Заполнено на "+fullness+"%");
             }
@@ -124,9 +133,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (buf.isEmpty() && !String.valueOf(s).isEmpty()){
-                    fullness+=10;
+                    fullness+=8;
                 } else if (!buf.isEmpty() && String.valueOf(s).isEmpty()){
-                    fullness-=10;
+                    fullness-=8;
                 }
                 fullnessTextView.setText("Заполнено на "+fullness+"%");
             }
@@ -135,9 +144,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionGender == 0 && position != 0) {
-                    fullness += 10;
+                    fullness += 8;
                 } else if (previousPositionGender != 0 && position == 0) {
-                    fullness -= 10;
+                    fullness -= 8;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionGender = position;
@@ -189,9 +198,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionZodiacSign == 0 && position != 0) {
-                    fullness += 10;
+                    fullness += 4;
                 } else if (previousPositionZodiacSign != 0 && position == 0) {
-                    fullness -= 10;
+                    fullness -= 4;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionZodiacSign = position;
@@ -205,9 +214,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionEducation == 0 && position != 0) {
-                    fullness += 10;
+                    fullness += 4;
                 } else if (previousPositionEducation != 0 && position == 0) {
-                    fullness -= 10;
+                    fullness -= 4;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionEducation = position;
@@ -221,9 +230,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionChildren == 0 && position != 0) {
-                    fullness += 10;
+                    fullness += 4;
                 } else if (previousPositionChildren != 0 && position == 0) {
-                    fullness -= 10;
+                    fullness -= 4;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionChildren = position;
@@ -237,9 +246,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionSmoking == 0 && position != 0) {
-                    fullness += 10;
+                    fullness += 4;
                 } else if (previousPositionSmoking != 0 && position == 0) {
-                    fullness -= 10;
+                    fullness -= 4;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionSmoking = position;
@@ -253,9 +262,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionAlcohol == 0 && position != 0) {
-                    fullness += 10;
+                    fullness += 4;
                 } else if (previousPositionAlcohol != 0 && position == 0) {
-                    fullness -= 10;
+                    fullness -= 4;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionAlcohol = position;
@@ -311,8 +320,7 @@ public class FragmentProfileSettings extends Fragment {
         spinnerAlcohol.setAdapter(adapter);
 
 
-        btnBac.setOnClickListener(v -> {
-        });
+        btnBac.setOnClickListener(v -> new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackBacFragment).execute());
 
 
         btnOk.setOnClickListener(v -> getData());
@@ -325,7 +333,7 @@ public class FragmentProfileSettings extends Fragment {
                     addTextView(text);
                     editAboutMe.setText("");
                     count++;
-                    fullness+=8;
+                    fullness+=4;
                     fullnessTextView.setText("Заполнено на "+fullness+"%");
                 } else {
                     ToastUtils.showShortToast(getContext(), "Нельзя добавить пустую запись");
@@ -337,8 +345,15 @@ public class FragmentProfileSettings extends Fragment {
             }
         });
 
+
+        if (!DataUtils.getEntry(requireContext())){
+            new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetData).execute();
+        }
+
         return rootView;
     }
+
+
 
 
     private void getData() {
@@ -354,9 +369,9 @@ public class FragmentProfileSettings extends Fragment {
 
             String target = spinnerTarget.getSelectedItem().toString();
             int id_target = 0;
-            if (target.equals("<b>Свидания</b>\\nХодить на свидания и хорошо\\nпроводить время")){id_target = 1;}
-            if (target.equals("<b>Отношения</b>\\nНайти вторую половинку")){id_target = 2;}
-            if (target.equals("<b>Общение без конкретики</b>\\nОбщяться, делиться мыслями")){id_target = 3;}
+            if (target.equals("Свидания\nХодить на свидания и хорошо\nпроводить время")){id_target = 1;}
+            if (target.equals("Отношения\nНайти вторую половинку")){id_target = 2;}
+            if (target.equals("Общение без конкретики\nОбщяться, делиться мыслями")){id_target = 3;}
 
             String city = editCity.getText().toString();
             String height = editHeight.getText().toString();
@@ -401,7 +416,7 @@ public class FragmentProfileSettings extends Fragment {
             if (alcohol.equals("Положительно")){id_alcohol = 3;}
 
             if (name.isEmpty() || age.isEmpty() || gender.isEmpty()){
-                ToastUtils.showShortToast(getContext(), "все основные и хотя бы 1 поле о себе должны быть заполнены");
+                ToastUtils.showShortToast(getContext(), "Все основные и хотя бы 1 поле о себе должны быть заполнены");
                 return;
             }
 
@@ -446,16 +461,16 @@ public class FragmentProfileSettings extends Fragment {
         }
         if (list.isEmpty()){
             list.add("");
-        } else {
-            list.remove(list.size() - 1);
         }
+
+        list.remove(list.size() - 1);
+
 
 
         // Преобразуем список в JSON строку
         JSONArray jsonArray = new JSONArray(list);
         return jsonArray.toString();
     }
-
 
     @SuppressLint("SetTextI18n")
     private void addTextView(String text) {
@@ -497,7 +512,7 @@ public class FragmentProfileSettings extends Fragment {
         deleteButton.setOnClickListener(v -> {
             containerAboutMe.removeView(linearLayout);
             count--;
-            fullness-=8;
+            fullness-=4;
             fullnessTextView.setText("Заполнено на "+fullness+"%");
         });
 
@@ -508,6 +523,9 @@ public class FragmentProfileSettings extends Fragment {
         containerAboutMe.addView(linearLayout);
     }
 
+
+
+
     RequestUtils.Callback callbackGetData = (fragment, result) -> {
         // Обработка ответа
         try {
@@ -515,6 +533,7 @@ public class FragmentProfileSettings extends Fragment {
             this.status = jsonObject.getInt("status");
             if (status == 0){
                 saveEntry(requireContext(), false);
+                saveFullness(requireContext(), fullness);
                 fragment = new FragmentProfile();
                 FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
             } else {
@@ -525,19 +544,42 @@ public class FragmentProfileSettings extends Fragment {
         }
     };
 
+    @SuppressLint("SetTextI18n")
     RequestUtils.Callback callbackSetData = (fragment, result) -> {
         // Обработка ответа
         try {
             JSONObject jsonObject = new JSONObject(result);
             this.status = jsonObject.getInt("status");
             if (status == 0){
-//                editName.setText(jsonObject.getString("name"));
-//                editAge.setText(jsonObject.getString("age"));
                 spinnerGender.setSelection(jsonObject.getInt("id_gender"));
                 spinnerTarget.setSelection(jsonObject.getInt("id_target"));
-                // О себе тут | список "about_me"
-//                editCity.setText(jsonObject.getString("city"));
-//                editHeight.setText(jsonObject.getString("height"));
+
+                // Получение "about_me" и преобразование его в массив строк
+                JSONArray aboutMeArray = jsonObject.getJSONArray("about_me");
+                String[] about_me_list = new String[aboutMeArray.length()];
+                for (int i = 0; i < aboutMeArray.length(); i++) {
+                    about_me_list[i] = aboutMeArray.getString(i);
+
+                }
+
+                requireActivity().runOnUiThread(() ->{
+                    try {
+                        for (String s : about_me_list) {
+                            addTextView(s);
+                            count++;
+                            fullness += 4;
+                        }
+
+                        fullnessTextView.setText("Заполнено на " + fullness + "%");
+                        editCity.setText(jsonObject.getString("city"));
+                        editHeight.setText(jsonObject.getString("height"));
+                        editName.setText(jsonObject.getString("name"));
+                        editAge.setText(jsonObject.getString("age"));
+                    } catch (Exception e){
+                        ToastUtils.showShortToast(requireContext(), "Error: "+e);
+                    }
+                });
+
                 spinnerZodiacSign.setSelection(jsonObject.getInt("id_zodiac_sign"));
                 spinnerEducation.setSelection(jsonObject.getInt("id_education"));
                 spinnerChildren.setSelection(jsonObject.getInt("id_children"));
@@ -551,6 +593,23 @@ public class FragmentProfileSettings extends Fragment {
         }
     };
 
+    @SuppressLint("SetTextI18n")
+    RequestUtils.Callback callbackBacFragment = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                fragment = new FragmentProfile();
+                FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            } else {
+                requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
+                        "Все основные и хотя бы 1 поле о себе должны быть заполнены"));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
 
     // Обработка пустого ответа от сервера
     public void handleEmptyResponse() {

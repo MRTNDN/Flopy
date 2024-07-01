@@ -29,7 +29,7 @@ public class RequestUtils {
 
     public void execute() {
 //        локалка
-        String URL_SERVER = "http://192.168.0.32:5000/" + requestLine;
+        String URL_SERVER = "http://192.168.0.102:5000/" + requestLine;
 
 //        сервер
 //        String URL_SERVER = "http://90.156.231.211:5000/" + requestLine;

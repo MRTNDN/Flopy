@@ -61,5 +61,4 @@ public class DataUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(FULLNESS, 0); // Возвращаем 0 если идентификатор не найден
     }
-
 }

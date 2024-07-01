@@ -1,0 +1,120 @@
+<!-- fragment_settings.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_rectangle_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Кнопка назад -->
+        <Button
+            android:id="@+id/btn_bac_settings"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bac"
+            android:contentDescription="Кнопка назад"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Основное -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_rectangle_grey"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_bac_settings">
+
+            <!-- Надпись Политика конфиденциальности -->
+            <TextView
+                android:id="@+id/text_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Пользовательское Соглашение"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_app">
+
+                <TextView
+                    android:id="@+id/text_app2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Общие положения Настоящее \n
+                    Пользовательское Соглашение (Далее Соглашение) регулирует отношения между Flopy (далее Flopy или Администрация) с одной стороны и пользователем сайта с другой. \n
+                    Сайт Flopy не является средством массовой информации.  \n\n
+                    Используя сайт Flopy, Вы соглашаетесь с условиями данного соглашения. \n
+                    Если Вы не согласны с условиями данного соглашения, не используйте сайт Flopy!  \n\n
+                    2. Права и обязанности сторон Пользователь имеет право: \n
+                    - осуществлять поиск информации на сайте \n
+                    - получать информацию на сайте \n
+                    - распространять информацию на сайте с других источников \n
+                    - изменять рейтинг других пользователей \n
+                    - Копировать информацию на другие сайты разрешено только с указанием источника . \n
+                    - использовать информацию сайта для личных некоммерческих целей  \n\n
+                    Администрация имеет право: \n
+                    - по своему усмотрению и необходимости создавать, изменять, отменять правила \n
+                    - ограничивать доступ к любой информации на сайте \n
+                    - по своему усмотрению и необходимости создавать, изменять, удалять информацию на сайте \n
+                    - удалять учетные записи пользователей без объяснения причины \n
+                    - отказывать в регистрации пользователей без объяснения причины  \n\n
+                    Пользователь обязуется: \n
+                    - обеспечить достоверность предоставляемой информации \n
+                    - не нарушать работоспособность сайта \n
+                    - не использовать скрипты (программы) для автоматизированного сбора информации и/или взаимодействия с Сайтом и его Сервисами  \n\n
+                    Администрация обязуется: \n
+                    - поддерживать работоспособность сайта  \n\n
+                    Ответственность сторон \n
+                    - пользователь лично несет полную ответственность за распространяемую им информацию \n
+                    - администрация не несет никакой ответственности за достоверность информации, скопированной из других источников \n
+                    - администрация не несёт ответственность за несовпадение ожидаемых Пользователем и реально полученных услуг \n
+                    - администрация не несет никакой ответственности за услуги, предоставляемые третьими лицами \n
+                    - в случае возникновения форс-мажорной ситуации (боевые действия, чрезвычайное положение, стихийное бедствие и т. д.) Администрация не гарантирует сохранность информации, размещённой Пользователем, а также бесперебойную работу информационного ресурса  \n\n
+                    Условия действия Соглашения\n
+                    Данное Соглашение вступает в силу при любом использовании данного сайта. \n
+                    Данное Соглашение бессрочно. \n
+                    Администрация оставляет за собой право в одностороннем порядке изменять данное соглашение по своему усмотрению. \n
+                    Администрация не оповещает пользователей об изменении в Соглашении. "
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="32dp" />
+
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Дополнительно -->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

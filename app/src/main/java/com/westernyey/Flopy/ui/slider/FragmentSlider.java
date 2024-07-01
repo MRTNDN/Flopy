@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
-import com.westernyey.Flopy.ui.SettingsFragment;
+import com.westernyey.Flopy.ui.settings.FragmentSettings;
 import com.westernyey.Flopy.ui.cardModel.Swap;
 
 public class FragmentSlider extends Fragment {
@@ -44,12 +44,12 @@ public class FragmentSlider extends Fragment {
         });
 
         btnOpenFil.setOnClickListener(v -> {
-            Fragment fragment = new SettingsFragment();
+            Fragment fragment = new FragmentSettings();
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
         });
 
         btnOpenSet.setOnClickListener(v -> {
-            Fragment fragment = new SettingsFragment();
+            Fragment fragment = new FragmentSettings();
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
         });
 
