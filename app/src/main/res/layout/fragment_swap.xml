@@ -11,10 +11,6 @@
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_edges"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,40 +18,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:rotation_degrees="15.0" />
+        app:rotation_degrees="15.0">
 
-    <Button
-        android:id="@+id/dislike"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="40dp"
+    </com.lorentzos.flingswipe.SwipeFlingAdapterView>
+
+
+
+    <!-- Контейнер кнопок  -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/cross"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/swipe"
-        app:layout_constraintStart_toStartOf="@+id/swipe" />
-
-    <!-- Отступ для кнопки "like" -->
-
-    <Button
-        android:id="@+id/like"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/heart"
-        app:layout_constraintBottom_toBottomOf="@+id/like2"
         app:layout_constraintEnd_toEndOf="@+id/swipe"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="@+id/swipe"
-        app:layout_constraintTop_toTopOf="@+id/dislike"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="@+id/swipe">
 
-    <Button
-        android:id="@+id/like2"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/double_heart"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/swipe"
-        app:layout_constraintEnd_toEndOf="@+id/swipe" />
+        <!-- Кнопка "dislike" -->
+        <Button
+            android:id="@+id/dislike"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/swap_but_dislike" />
+
+        <!-- Кнопка "back" -->
+        <Button
+            android:id="@+id/back"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/swap_but_back" />
+
+        <!-- Кнопка "super_like" -->
+        <Button
+            android:id="@+id/super_like"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/swap_but_super_like" />
+
+        <!-- Кнопка "like" -->
+        <Button
+            android:id="@+id/like"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/swap_but_like" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

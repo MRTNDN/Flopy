@@ -1,5 +1,8 @@
 package com.westernyey.Flopy.ui.settings;
 
+import static com.cripochec.Flopy.ui.utils.DataUtils.getLastFragmentPosition;
+import static com.cripochec.Flopy.ui.utils.DataUtils.saveLastFragmentPosition;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
+import com.westernyey.Flopy.ui.profile.FragmentProfile;
 import com.westernyey.Flopy.ui.settings.dialog.ExitConfirmationDialog;
 import com.westernyey.Flopy.ui.settings.dialog.InputConfirmationDialog;
 import com.westernyey.Flopy.ui.settings.dialog.SettingsFragmentAgreement;
@@ -42,8 +46,15 @@ public class FragmentSettings extends Fragment {
         delLayout = rootView.findViewById(R.id.delLayout);
 
         btnBac.setOnClickListener(v -> {
-            Fragment fragment = new FragmentSlider();
-            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            if (getLastFragmentPosition(requireContext()).equals("profile")){
+                saveLastFragmentPosition(requireContext(), "");
+                Fragment fragment = new FragmentProfile();
+                FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            } else {
+                Fragment fragment = new FragmentSlider();
+                FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            }
+
         });
 
         // скрыть аккаунт

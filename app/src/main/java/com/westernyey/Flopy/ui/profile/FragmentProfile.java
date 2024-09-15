@@ -1,6 +1,11 @@
 package com.westernyey.Flopy.ui.profile;
 
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto1;
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto2;
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto3;
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto4;
 import static com.cripochec.Flopy.ui.utils.DataUtils.getUserId;
+import static com.cripochec.Flopy.ui.utils.DataUtils.saveLastFragmentPosition;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -11,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +26,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
@@ -52,9 +59,47 @@ public class FragmentProfile extends Fragment {
         progressBar = rootView.findViewById(R.id.progress_circular);
         tvFillPercentage = rootView.findViewById(R.id.tv_progress_percentage);
         name_and_age = rootView.findViewById(R.id.name_and_age);
+        ImageView photo1 = rootView.findViewById(R.id.profile_image_view_1);
+        ImageView photo2 = rootView.findViewById(R.id.profile_image_view_2);
+        ImageView photo3 = rootView.findViewById(R.id.profile_image_view_3);
+        ImageView photo4 = rootView.findViewById(R.id.profile_image_view_4);
 
         // Устанавливаем прогресс профиля
         setProfileProgress(DataUtils.getFullness(requireContext()));
+
+        // Устанавливаем фотографии профиля
+        try {
+            String photo1_url = getPhoto1(requireContext());
+            if (!photo1_url.equals("add_photo")){
+                Glide.with(this).load(photo1_url).into(photo1);
+            } else {
+                photo1.setVisibility(View.GONE);
+            }
+
+            String photo2_url = getPhoto2(requireContext());
+            if (!photo2_url.equals("add_photo")){
+                Glide.with(this).load(photo2_url).into(photo2);
+            } else {
+                photo2.setVisibility(View.GONE);
+            }
+
+            String photo3_url = getPhoto3(requireContext());
+            if (!photo3_url.equals("add_photo")){
+                Glide.with(this).load(photo3_url).into(photo3);
+            } else {
+                photo3.setVisibility(View.GONE);
+            }
+
+            String photo4_url = getPhoto4(requireContext());
+            if (!photo4_url.equals("add_photo")){
+                Glide.with(this).load(photo4_url).into(photo4);
+            } else {
+                photo4.setVisibility(View.GONE);
+            }
+        } catch (Exception e){
+
+        }
+
 
 
         btnOpenMenu.setOnClickListener(v -> {
@@ -65,6 +110,7 @@ public class FragmentProfile extends Fragment {
         });
 
         btnOpenSet.setOnClickListener(v -> {
+            saveLastFragmentPosition(requireContext(), "profile");
             Fragment fragment = new FragmentSettings();
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
         });
@@ -82,7 +128,7 @@ public class FragmentProfile extends Fragment {
     @SuppressLint("SetTextI18n")
     private void addTextView(String text) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         // Создаем горизонтальный LinearLayout

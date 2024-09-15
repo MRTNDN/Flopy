@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,54 +22,52 @@ public class Swap extends Fragment {
     private List<CardModel> data;
     private SwipeFlingAdapterView flingAdapterView;
 
-    // Пустой конструктор (необязательно)
-    public Swap() {
-        // Пустой конструктор
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Надуваем макет фрагмента
         View rootView = inflater.inflate(R.layout.fragment_swap, container, false);
 
-        // Применяем фон с закругленными углами
-        rootView.setBackgroundResource(R.drawable.rounded_edges);
-
         flingAdapterView = rootView.findViewById(R.id.swipe);
-        // Инициализация кнопок "like" и "dislike"
-        Button like = rootView.findViewById(R.id.like);
+
+        // Инициализация кнопок
         Button dislike = rootView.findViewById(R.id.dislike);
+        Button back = rootView.findViewById(R.id.back);
+        Button super_like = rootView.findViewById(R.id.super_like);
+        Button like = rootView.findViewById(R.id.like);
 
-        // Установка слушателей для кнопок "like" и "dislike"
-        like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flingAdapterView.getTopCardListener().selectRight();
-            }
+
+        dislike.setOnClickListener(v -> {
+            flingAdapterView.getTopCardListener().selectLeft();
         });
 
-        dislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flingAdapterView.getTopCardListener().selectLeft();
-            }
+        back.setOnClickListener(v -> {
+
         });
+
+        super_like.setOnClickListener(v -> {
+
+        });
+
+        like.setOnClickListener(v -> {
+            flingAdapterView.getTopCardListener().selectRight();
+        });
+
 
         data = new ArrayList<>();
 
-        data.add(new CardModel("бобер", R.drawable.bober));
-        data.add(new CardModel("dj tape", R.drawable.djtape));
-        data.add(new CardModel("druc", R.drawable.druc));
-        data.add(new CardModel("ezh", R.drawable.ezh));
-        data.add(new CardModel("metin", R.drawable.metin));
-        data.add(new CardModel("макака", R.drawable.monkey));
-        data.add(new CardModel("Неупокоева", R.drawable.neupok));
-        data.add(new CardModel("Оксана", R.drawable.oksana));
+        data.add(new CardModel("бобер", "Екатеринбург", "20 км." , "Дружба", R.drawable.bober));
+        data.add(new CardModel("dj tape", "Екатеринбург", "20 км." , "Дружба", R.drawable.djtape));
+        data.add(new CardModel("druc", "Екатеринбург", "20 км." , "Дружба", R.drawable.druc));
+        data.add(new CardModel("ezh", "Екатеринбург", "20 км." , "Дружба", R.drawable.ezh));
+        data.add(new CardModel("metin", "Екатеринбург", "20 км." , "Дружба", R.drawable.metin));
+        data.add(new CardModel("макака", "Екатеринбург", "20 км." , "Дружба", R.drawable.monkey));
+        data.add(new CardModel("Неупокоева", "Екатеринбург", "20 км." , "Дружба", R.drawable.neupok));
+        data.add(new CardModel("Оксана", "Екатеринбург", "20 км." , "Дружба", R.drawable.oksana));
 
         cardAdapter = new CardAdapter(getActivity(), R.layout.card_item_for_swap, data);
 
         flingAdapterView.setAdapter(cardAdapter);
+
 
         flingAdapterView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -83,41 +78,32 @@ public class Swap extends Fragment {
 
             @Override
             public void onLeftCardExit(Object o) {
-              //  Toast.makeText(getActivity(), "dislike", Toast.LENGTH_SHORT).show();
-               // View cardView = (View) o;
-              //  Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.scale_out_left);
-              //  cardView.startAnimation(animation);
+                Toast.makeText(getActivity(), "dislike", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                //View cardView = (View) o;
-                //Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.scale_out_right);
-               // cardView.startAnimation(animation);
-                // Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-
+//                Toast.makeText(getActivity(), "Empty", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onScroll(float v) {
-
+//                Toast.makeText(getActivity(), "Scroll", Toast.LENGTH_SHORT).show();
             }
         });
 
-        flingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int i, Object o) {
-                //Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        flingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(int i, Object o) {
+////                Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return rootView;
-    }
-
-    public void setLayoutParams(FrameLayout.LayoutParams layoutParams) {
     }
 }

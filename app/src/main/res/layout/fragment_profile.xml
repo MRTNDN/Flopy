@@ -74,32 +74,60 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/profile_image_view_1"
-                        android:layout_width="145dp"
-                        android:layout_height="145dp"
-                        android:src="@drawable/bober" />
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/CardView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="10dp">
 
-                    <ImageView
-                        android:id="@+id/profile_image_view_2"
-                        android:layout_width="145dp"
-                        android:layout_height="145dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/bober" />
+                        <ImageView
+                            android:id="@+id/profile_image_view_1"
+                            android:layout_width="145dp"
+                            android:layout_height="145dp"
+                            android:src="@color/dark_grey"/>
+                    </androidx.cardview.widget.CardView>
 
-                    <ImageView
-                        android:id="@+id/profile_image_view_3"
-                        android:layout_width="145dp"
-                        android:layout_height="145dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/bober" />
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/CardView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="10dp">
 
-                    <ImageView
-                        android:id="@+id/profile_image_view_4"
-                        android:layout_width="145dp"
-                        android:layout_height="145dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/bober" />
+                        <ImageView
+                            android:id="@+id/profile_image_view_2"
+                            android:layout_width="145dp"
+                            android:layout_height="145dp"
+                            android:src="@color/dark_grey"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/CardView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:id="@+id/profile_image_view_3"
+                            android:layout_width="145dp"
+                            android:layout_height="145dp"
+                            android:src="@color/dark_grey"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/CardView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:id="@+id/profile_image_view_4"
+                            android:layout_width="145dp"
+                            android:layout_height="145dp"
+                            android:src="@color/dark_grey"/>
+                    </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -166,7 +194,7 @@
                 android:max="100"
                 android:progress="0"
                 android:progressDrawable="@drawable/circular_progress"
-                android:rotation="-90"
+                android:rotation="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

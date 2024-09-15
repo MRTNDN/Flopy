@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.westernyey.Flopy.R;
 
 import java.util.List;
@@ -17,20 +19,26 @@ public class CardAdapter extends ArrayAdapter<CardModel> {
         super(context, resourceId, items);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        CardModel cardModel = getItem(position);
-
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.card_item_for_swap, parent, false);
+            CardModel cardModel = getItem(position);
+            assert cardModel != null;
+
+            TextView name_and_age = convertView.findViewById(R.id.data);
+            TextView city = convertView.findViewById(R.id.city);
+            TextView distance = convertView.findViewById(R.id.distance);
+            TextView target = convertView.findViewById(R.id.target);
+            ImageView imageView = convertView.findViewById(R.id.image);
+
+            name_and_age.setText(cardModel.getNameAndAge());
+            city.setText(cardModel.getCity());
+            distance.setText(cardModel.getDistance());
+            target.setText(cardModel.getTarget());
+            imageView.setImageResource(cardModel.getImageResourceId());
         }
-
-        TextView dataTextView = convertView.findViewById(R.id.data);
-        ImageView imageView = convertView.findViewById(R.id.image);
-
-        dataTextView.setText(cardModel.getText());
-        imageView.setImageResource(cardModel.getImageResourceId());
-
         return convertView;
     }
 }

@@ -1,5 +1,7 @@
 package com.westernyey.Flopy.ui.menu;
 
+import static com.cripochec.Flopy.ui.utils.DataUtils.clearAllData;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.profile.FragmentProfile;
@@ -52,7 +53,7 @@ public class Sidebar_Menu extends Fragment {
 
         btn_massage.setOnClickListener(v -> {
             // Обработка нажатия на кнопку btn_massage
-            DataUtils.saveUserId(requireContext(), 0);
+            clearAllData(requireContext());
 //            Fragment fragment = new FragmentProfile();
 //            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
 //

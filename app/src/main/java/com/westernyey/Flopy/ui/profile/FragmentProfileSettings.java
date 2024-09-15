@@ -1,11 +1,23 @@
 package com.westernyey.Flopy.ui.profile;
 
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto1;
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto2;
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto3;
+import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto4;
 import static com.cripochec.Flopy.ui.utils.DataUtils.getUserId;
 import static com.cripochec.Flopy.ui.utils.DataUtils.saveEntry;
 import static com.cripochec.Flopy.ui.utils.DataUtils.saveFullness;
+import static com.cripochec.Flopy.ui.utils.DataUtils.savePhoto1;
+import static com.cripochec.Flopy.ui.utils.DataUtils.savePhoto2;
+import static com.cripochec.Flopy.ui.utils.DataUtils.savePhoto3;
+import static com.cripochec.Flopy.ui.utils.DataUtils.savePhoto4;
+import static com.cripochec.Flopy.ui.utils.UriUtils.getFileFromUri;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,19 +35,24 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
+import com.cripochec.Flopy.ui.utils.RequestUtilsPhoto;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.westernyey.Flopy.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,15 +60,17 @@ public class FragmentProfileSettings extends Fragment {
     private EditText editAboutMe, editName, editAge, editCity, editHeight;
     private LinearLayout containerAboutMe;
     private int count = 0;
+    private int photoNumber = 0;
     private int status;
     private int fullness;
     private String buf;
     Spinner spinnerGender, spinnerTarget, spinnerZodiacSign, spinnerEducation, spinnerChildren, spinnerSmoking, spinnerAlcohol;
     private TextView fullnessTextView;
+    private ImageView photo1, photo2, photo3, photo4;
     int previousPositionGender, previousPositionZodiacSign, previousPositionEducation,
             previousPositionChildren, previousPositionSmoking, previousPositionAlcohol = 0;
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DiscouragedApi"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile_settings, container, false);
@@ -77,29 +96,15 @@ public class FragmentProfileSettings extends Fragment {
         containerAboutMe = rootView.findViewById(R.id.container_about_me);
 
         // За каждое фото +8,5
-        ImageView photo1 = rootView.findViewById(R.id.image1);
-        ImageView photo2 = rootView.findViewById(R.id.image2);
-        ImageView photo3 = rootView.findViewById(R.id.image3);
-        ImageView photo4 = rootView.findViewById(R.id.image4);
+        photo1 = rootView.findViewById(R.id.image1);
+        photo2 = rootView.findViewById(R.id.image2);
+        photo3 = rootView.findViewById(R.id.image3);
+        photo4 = rootView.findViewById(R.id.image4);
 
-
-//        String url1 = "https://belkiskastasarim.com.tr/uploads/yazilar/kucuk/yok.png";
-//        String url1 = "http://90.156.231.211/root/FlopyPhoto/yok.png";
-//        String url2 = "https://belkiskastasarim.com.tr/uploads/yazilar/kucuk/yok.png";
-//        String url3 = "https://your-server.com/path/to/image3.jpg";
-//        String url4 = "https://your-server.com/path/to/image4.jpg";
-
-//        Glide.with(this).load(url1).into(photo1);
-//        Glide.with(this).load(url2).into(photo2);
-//        Glide.with(this).load(url3).into(photo3);
-//        Glide.with(this).load(url4).into(photo4);
-
-
-
-        photo1.setImageResource(R.color.castom_red);
-        photo2.setImageResource(R.color.light_blue_600);
-        photo3.setImageResource(R.color.purple_200);
-        photo4.setImageResource(R.color.yelloww);
+        photo1.setOnClickListener(v -> showOptionsDialog(photo1, getPhoto1(requireContext()), 1));
+        photo2.setOnClickListener(v -> showOptionsDialog(photo2, getPhoto2(requireContext()), 2));
+        photo3.setOnClickListener(v -> showOptionsDialog(photo3, getPhoto3(requireContext()), 3));
+        photo4.setOnClickListener(v -> showOptionsDialog(photo4, getPhoto4(requireContext()), 4));
 
 // Спинеры слушатели
         editName.addTextChangedListener(new TextWatcher() {
@@ -348,7 +353,11 @@ public class FragmentProfileSettings extends Fragment {
 
         if (!DataUtils.getEntry(requireContext())){
             new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetData).execute();
+        } else {
+            new RequestUtils(this, "pars_persons_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetPhoto).execute();
         }
+
+
 
         return rootView;
     }
@@ -523,7 +532,85 @@ public class FragmentProfileSettings extends Fragment {
         containerAboutMe.addView(linearLayout);
     }
 
+    private void showOptionsDialog(ImageView imageView, String imageUrl, int photoNumber) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
+        // Проверяем, установлено ли изображение R.drawable.add_photo
+        boolean isAddPhoto = imageView.getDrawable() != null && imageUrl.equals("add_photo");
+        String[] options;
+
+        if (isAddPhoto) {
+            options = new String[]{"Сделать фото", "Выбрать из галереи"};
+        } else if (imageView.getId() == R.id.image1) {
+            options = new String[]{"Удалить фото"};
+        } else {
+            options = new String[]{"Сделать главным", "Удалить фото"};
+        }
+
+        builder.setItems(options, (dialog, which) -> {
+            String selectedOption = options[which];
+            switch (selectedOption) {
+                case "Сделать фото":
+                    ImagePicker.with(this)
+                            .cameraOnly()	        //User can only capture image using Camera
+                            .crop(9f, 16f)	//Crop image with 16:9 aspect ratio
+                            .compress(1024)	//Final image size will be less than 1 MB
+                            .start();
+                    this.photoNumber = photoNumber;
+                    break;
+                case "Выбрать из галереи":
+                    ImagePicker.with(this)
+                            .galleryOnly()          //User can only select image from Gallery
+                            .crop(9f, 16f)	//Crop image with 16:9 aspect ratio
+                            .compress(1024)	//Final image size will be less than 1 MB
+                            .galleryMimeTypes(new String[]{"image/png", "image/jpg", "image/jpeg"})
+                            .start();
+                    this.photoNumber = photoNumber;
+                    break;
+                case "Удалить фото":
+                    photo1.setImageResource(R.drawable.add_photo);
+                    photo2.setImageResource(R.drawable.add_photo);
+                    photo3.setImageResource(R.drawable.add_photo);
+                    photo4.setImageResource(R.drawable.add_photo);
+                    new RequestUtils(this, "delete_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\", \"photo_url\": \""+ imageUrl +"\"}", callbackDeletePhoto).execute();
+                    break;
+                case "Сделать главным":
+                    new RequestUtils(this, "make_main_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\", \"photo_url\": \""+ imageUrl +"\"}", callbackMakeMainPhoto).execute();
+                    break;
+            }
+        });
+
+        builder.show();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        assert data != null;
+        Uri uri = data.getData();
+
+        try {
+            // Получение файла из URI через кэш
+            File file = getFileFromUri(requireContext(), uri);  // Преобразуем URI в файл через кэш
+
+            if (getPhoto1(requireContext()).equals("add_photo")){
+                photoNumber = 1;
+            } else if (getPhoto2(requireContext()).equals("add_photo")){
+                photoNumber = 2;
+            } else if (getPhoto3(requireContext()).equals("add_photo")){
+                photoNumber = 3;
+            } else if (getPhoto4(requireContext()).equals("add_photo")){
+                photoNumber = 4;
+            }
+
+            // Отправляем запрос на сервер с файлом
+            new RequestUtilsPhoto(this, "save_persons_photo", "POST", file, getUserId(requireContext()), photoNumber, callbackSavePhoto).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        photoNumber = 0;
+    }
 
 
     RequestUtils.Callback callbackGetData = (fragment, result) -> {
@@ -585,6 +672,43 @@ public class FragmentProfileSettings extends Fragment {
                 spinnerChildren.setSelection(jsonObject.getInt("id_children"));
                 spinnerSmoking.setSelection(jsonObject.getInt("id_smoking"));
                 spinnerAlcohol.setSelection(jsonObject.getInt("id_alcohol"));
+
+                savePhoto1(requireContext(), "add_photo");
+                savePhoto2(requireContext(), "add_photo");
+                savePhoto3(requireContext(), "add_photo");
+                savePhoto4(requireContext(), "add_photo");
+
+                String photo1_url = jsonObject.getString("photo1_url");
+                if (!photo1_url.equals("None")){
+                    savePhoto1(requireContext(), photo1_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo1_url).into(photo1));
+                } else {
+                    photo1.setImageResource(R.drawable.add_photo);
+                }
+
+                String photo2_url = jsonObject.getString("photo2_url");
+                if (!photo2_url.equals("None")){
+                    savePhoto2(requireContext(), photo2_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo2_url).into(photo2));
+                } else {
+                    photo2.setImageResource(R.drawable.add_photo);
+                }
+
+                String photo3_url = jsonObject.getString("photo3_url");
+                if (!photo3_url.equals("None")){
+                    savePhoto3(requireContext(), photo3_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo3_url).into(photo3));
+                } else {
+                    photo3.setImageResource(R.drawable.add_photo);
+                }
+
+                String photo4_url = jsonObject.getString("photo4_url");
+                if (!photo4_url.equals("None")){
+                    savePhoto4(requireContext(), photo4_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo4_url).into(photo4));
+                } else {
+                    photo4.setImageResource(R.drawable.add_photo);
+                }
             } else {
                 handleEmptyResponse();
             }
@@ -610,6 +734,105 @@ public class FragmentProfileSettings extends Fragment {
             throw new RuntimeException(e);
         }
     };
+
+    RequestUtils.Callback callbackSetPhoto = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                // +8,5 баллов за фото
+
+
+                savePhoto1(requireContext(), "add_photo");
+                savePhoto2(requireContext(), "add_photo");
+                savePhoto3(requireContext(), "add_photo");
+                savePhoto4(requireContext(), "add_photo");
+
+                String photo1_url = jsonObject.getString("photo1_url");
+                if (!photo1_url.equals("None")){
+                    savePhoto1(requireContext(), photo1_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo1_url).into(photo1));
+                } else {
+                    photo1.setImageResource(R.drawable.add_photo);
+                }
+
+                String photo2_url = jsonObject.getString("photo2_url");
+                if (!photo2_url.equals("None")){
+                    savePhoto2(requireContext(), photo2_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo2_url).into(photo2));
+                } else {
+                    photo2.setImageResource(R.drawable.add_photo);
+                }
+
+                String photo3_url = jsonObject.getString("photo3_url");
+                if (!photo3_url.equals("None")){
+                    savePhoto3(requireContext(), photo3_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo3_url).into(photo3));
+                } else {
+                    photo3.setImageResource(R.drawable.add_photo);
+                }
+
+                String photo4_url = jsonObject.getString("photo4_url");
+                if (!photo4_url.equals("None")){
+                    savePhoto4(requireContext(), photo4_url);
+                    requireActivity().runOnUiThread(() -> Glide.with(this).load(photo4_url).into(photo4));
+                } else {
+                    photo4.setImageResource(R.drawable.add_photo);
+                }
+            } else {
+                handleEmptyResponse();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
+    RequestUtils.Callback callbackMakeMainPhoto = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                new RequestUtils(this, "pars_persons_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetPhoto).execute();
+            } else {
+                handleEmptyResponse();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
+    RequestUtils.Callback callbackDeletePhoto = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                new RequestUtils(this, "pars_persons_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetPhoto).execute();
+            } else {
+                handleEmptyResponse();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
+    RequestUtilsPhoto.Callback callbackSavePhoto = (fragment, result) -> {
+        // Обработка ответа
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            this.status = jsonObject.getInt("status");
+            if (status == 0){
+                new RequestUtils(this, "pars_persons_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetPhoto).execute();
+            } else {
+                handleEmptyResponse();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    };
+
 
     // Обработка пустого ответа от сервера
     public void handleEmptyResponse() {
