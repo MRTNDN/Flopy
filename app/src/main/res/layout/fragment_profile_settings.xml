@@ -194,7 +194,7 @@
                     tools:ignore="HardcodedText" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/CardView1"
+                    android:id="@+id/CardModelView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/CardView1">
+                    app:layout_constraintTop_toTopOf="@+id/CardModelView">
 
                     <ImageView
                         android:id="@+id/image2"
@@ -243,7 +243,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/CardView1"
+                    app:layout_constraintBottom_toBottomOf="@+id/CardModelView"
                     app:layout_constraintEnd_toEndOf="@+id/CardView3"
                     app:layout_constraintStart_toStartOf="@+id/CardView3"  >
 

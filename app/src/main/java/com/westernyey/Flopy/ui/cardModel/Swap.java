@@ -36,6 +36,10 @@ public class Swap extends Fragment {
         Button like = rootView.findViewById(R.id.like);
 
 
+        like.setOnClickListener(v -> {
+            flingAdapterView.getTopCardListener().selectRight();
+        });
+
         dislike.setOnClickListener(v -> {
             flingAdapterView.getTopCardListener().selectLeft();
         });
@@ -48,21 +52,17 @@ public class Swap extends Fragment {
 
         });
 
-        like.setOnClickListener(v -> {
-            flingAdapterView.getTopCardListener().selectRight();
-        });
-
 
         data = new ArrayList<>();
 
-        data.add(new CardModel("бобер", "Екатеринбург", "20 км." , "Дружба", R.drawable.bober));
-        data.add(new CardModel("dj tape", "Екатеринбург", "20 км." , "Дружба", R.drawable.djtape));
-        data.add(new CardModel("druc", "Екатеринбург", "20 км." , "Дружба", R.drawable.druc));
-        data.add(new CardModel("ezh", "Екатеринбург", "20 км." , "Дружба", R.drawable.ezh));
-        data.add(new CardModel("metin", "Екатеринбург", "20 км." , "Дружба", R.drawable.metin));
-        data.add(new CardModel("макака", "Екатеринбург", "20 км." , "Дружба", R.drawable.monkey));
-        data.add(new CardModel("Неупокоева", "Екатеринбург", "20 км." , "Дружба", R.drawable.neupok));
-        data.add(new CardModel("Оксана", "Екатеринбург", "20 км." , "Дружба", R.drawable.oksana));
+//        List<Integer> boberImages = Arrays.asList(R.drawable.bober, R.drawable.djtape, R.drawable.druc, R.drawable.ezh);
+//        List<String> boberAdditionalInfo = Arrays.asList("Информация 1", "Информация 2", "Информация 3"); // Пример дополнительной информации
+//        data.add(new CardModel("бобер", "Екатеринбург", "20 км.", "Дружба", boberImages, boberAdditionalInfo));
+//
+//        List<Integer> metinImages = Arrays.asList(R.drawable.metin, R.drawable.monkey, R.drawable.neupok, R.drawable.oksana);
+//        List<String> metinAdditionalInfo = Arrays.asList("Информация 1", "Информация 2"); // Пример дополнительной информации
+//        data.add(new CardModel("metin", "Екатеринбург", "20 км.", "Дружба", metinImages, metinAdditionalInfo));
+
 
         cardAdapter = new CardAdapter(getActivity(), R.layout.card_item_for_swap, data);
 
@@ -83,26 +83,19 @@ public class Swap extends Fragment {
 
             @Override
             public void onRightCardExit(Object o) {
-                 Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "like", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-//                Toast.makeText(getActivity(), "Empty", Toast.LENGTH_SHORT).show();
+                // Handle if needed
             }
 
             @Override
             public void onScroll(float v) {
-//                Toast.makeText(getActivity(), "Scroll", Toast.LENGTH_SHORT).show();
+                // Handle if needed
             }
         });
-
-//        flingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClicked(int i, Object o) {
-////                Toast.makeText(getActivity(), "data is " + data.get(i).getText(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         return rootView;
     }

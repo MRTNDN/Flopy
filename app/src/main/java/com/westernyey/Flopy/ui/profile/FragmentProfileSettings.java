@@ -251,9 +251,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionSmoking == 0 && position != 0) {
-                    fullness += 4;
+                    fullness += 5;
                 } else if (previousPositionSmoking != 0 && position == 0) {
-                    fullness -= 4;
+                    fullness -= 5;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionSmoking = position;
@@ -267,9 +267,9 @@ public class FragmentProfileSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (previousPositionAlcohol == 0 && position != 0) {
-                    fullness += 4;
+                    fullness += 5;
                 } else if (previousPositionAlcohol != 0 && position == 0) {
-                    fullness -= 4;
+                    fullness -= 5;
                 }
                 fullnessTextView.setText("Заполнено на " + fullness + "%");
                 previousPositionAlcohol = position;
@@ -282,54 +282,17 @@ public class FragmentProfileSettings extends Fragment {
 
 
 // Спинеры инициализация
-        // Спинер полов
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.gender_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerGender.setAdapter(adapter);
-
-        // Спинер цели
-        adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.target_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerTarget.setAdapter(adapter);
-
-        // Спинер знак зодиака
-        adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.zodiac_sign_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerZodiacSign.setAdapter(adapter);
-
-        // Спинер образование
-        adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.education_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerEducation.setAdapter(adapter);
-
-        // Спинер дети
-        adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.children_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerChildren.setAdapter(adapter);
-
-        // Спинер курение
-        adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.smoking_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerSmoking.setAdapter(adapter);
-
-        // Спинер алкоголь
-        adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.alcohol_array, R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item); // Применяем кастомный макет
-        spinnerAlcohol.setAdapter(adapter);
-
+        initializeSpinner(spinnerGender, R.array.gender_array);
+        initializeSpinner(spinnerTarget, R.array.target_array);
+        initializeSpinner(spinnerZodiacSign, R.array.zodiac_sign_array);
+        initializeSpinner(spinnerEducation, R.array.education_array);
+        initializeSpinner(spinnerChildren, R.array.children_array);
+        initializeSpinner(spinnerSmoking, R.array.smoking_array);
+        initializeSpinner(spinnerAlcohol, R.array.alcohol_array);
 
         btnBac.setOnClickListener(v -> new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackBacFragment).execute());
 
-
         btnOk.setOnClickListener(v -> getData());
-
 
         btnAddAboutMe.setOnClickListener(v -> {
             if (count < 3) {
@@ -350,20 +313,21 @@ public class FragmentProfileSettings extends Fragment {
             }
         });
 
-
         if (!DataUtils.getEntry(requireContext())){
             new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetData).execute();
         } else {
             new RequestUtils(this, "pars_persons_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetPhoto).execute();
         }
-
-
-
         return rootView;
     }
 
-
-
+    // Метод для инициализации спиннера
+    private void initializeSpinner(Spinner spinner, int arrayResId) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(), arrayResId, R.layout.custom_spinner_item);
+        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
 
     private void getData() {
         // Сбор данных из EditText и Spinner
@@ -532,6 +496,7 @@ public class FragmentProfileSettings extends Fragment {
         containerAboutMe.addView(linearLayout);
     }
 
+    @SuppressLint("SetTextI18n")
     private void showOptionsDialog(ImageView imageView, String imageUrl, int photoNumber) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
@@ -572,6 +537,11 @@ public class FragmentProfileSettings extends Fragment {
                     photo2.setImageResource(R.drawable.add_photo);
                     photo3.setImageResource(R.drawable.add_photo);
                     photo4.setImageResource(R.drawable.add_photo);
+
+                    fullness -= 8;
+                    requireActivity().runOnUiThread(() -> fullnessTextView.setText("Заполнено на " + fullness + "%"));
+                    saveFullness(requireContext(), fullness);
+
                     new RequestUtils(this, "delete_photo", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\", \"photo_url\": \""+ imageUrl +"\"}", callbackDeletePhoto).execute();
                     break;
                 case "Сделать главным":
@@ -583,7 +553,7 @@ public class FragmentProfileSettings extends Fragment {
         builder.show();
     }
 
-
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -604,6 +574,10 @@ public class FragmentProfileSettings extends Fragment {
                 photoNumber = 4;
             }
 
+            fullness += 8;
+            requireActivity().runOnUiThread(() -> fullnessTextView.setText("Заполнено на " + fullness + "%"));
+            saveFullness(requireContext(), fullness);
+
             // Отправляем запрос на сервер с файлом
             new RequestUtilsPhoto(this, "save_persons_photo", "POST", file, getUserId(requireContext()), photoNumber, callbackSavePhoto).execute();
         } catch (Exception e) {
@@ -611,7 +585,6 @@ public class FragmentProfileSettings extends Fragment {
         }
         photoNumber = 0;
     }
-
 
     RequestUtils.Callback callbackGetData = (fragment, result) -> {
         // Обработка ответа
@@ -741,8 +714,6 @@ public class FragmentProfileSettings extends Fragment {
             JSONObject jsonObject = new JSONObject(result);
             this.status = jsonObject.getInt("status");
             if (status == 0){
-                // +8,5 баллов за фото
-
 
                 savePhoto1(requireContext(), "add_photo");
                 savePhoto2(requireContext(), "add_photo");
@@ -832,7 +803,6 @@ public class FragmentProfileSettings extends Fragment {
             throw new RuntimeException(e);
         }
     };
-
 
     // Обработка пустого ответа от сервера
     public void handleEmptyResponse() {
