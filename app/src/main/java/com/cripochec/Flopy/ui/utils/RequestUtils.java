@@ -2,16 +2,18 @@ package com.cripochec.Flopy.ui.utils;
 
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 
 public class RequestUtils {
     private final OkHttpClient client = new OkHttpClient();
@@ -19,30 +21,60 @@ public class RequestUtils {
     private final String requestLine;
     private final String method;
     private final String data;
+    private final List<File> files;  // Для файлов
     private final Callback callback;
 
+    // Конструктор для обычных запросов (без файлов)
     public RequestUtils(Fragment fragment, String requestLine, String method, String data, Callback callback) {
         this.fragmentRef = new WeakReference<>(fragment);
         this.requestLine = requestLine;
         this.method = method;
         this.data = data;
+        this.files = null;  // Нет файлов
+        this.callback = callback;
+    }
+
+    // Конструктор для запросов с файлами
+    public RequestUtils(Fragment fragment, String requestLine, String method, String data, List<File> files, Callback callback) {
+        this.fragmentRef = new WeakReference<>(fragment);
+        this.requestLine = requestLine;
+        this.method = method;
+        this.data = data;
+        this.files = files;  // Список файлов
         this.callback = callback;
     }
 
     public void execute() {
-        String URL_SERVER = "http://192.168.0.104:5000/" + requestLine;
+        String URL_SERVER = DataUtils.IP + requestLine;
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), data);
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(URL_SERVER)
-                .addHeader("Content-Type", "application/json");  // Установка заголовка
+        Request.Builder requestBuilder = new Request.Builder().url(URL_SERVER);
 
-        // Указываем requestBody только для POST, PUT, PATCH и т.д.
-        if (!method.equals("GET")) {
+        RequestBody requestBody;
+        if (files != null && !files.isEmpty()) {
+            // Если есть файлы, создаём multipart body
+            MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM);
+
+            // Добавляем JSON данные как часть multipart
+            if (data != null && !data.isEmpty()) {
+                multipartBuilder.addFormDataPart("json", data);
+            }
+
+            // Добавляем файлы
+            for (File file : files) {
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
+                multipartBuilder.addFormDataPart("photo", file.getName(), fileBody);
+            }
+
+            requestBody = multipartBuilder.build();
             requestBuilder.method(method, requestBody);
         } else {
-            requestBuilder.method(method, null);
+            // Если файлов нет, отправляем обычный JSON
+            requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), data);
+            requestBuilder.method(method.equals("GET") ? method : method, method.equals("GET") ? null : requestBody);
+            requestBuilder.addHeader("Content-Type", "application/json");
         }
+
         Request request = requestBuilder.build();
 
         // Отправляем запрос асинхронно

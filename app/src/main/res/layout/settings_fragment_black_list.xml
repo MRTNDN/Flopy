@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/rounded_rectangle_grey"
@@ -41,45 +41,36 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_bac_settings">
+            app:layout_constraintTop_toBottomOf="@+id/btn_bac_settings" >
 
-            <!-- Надпись Политика конфиденциальности -->
             <TextView
-                android:id="@+id/text_app"
-                android:layout_width="match_parent"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Пользовательское Соглашение"
+                android:layout_marginStart="16dp"
+                android:text="Чёрный список"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/userContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_app">
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-                <TextView
-                    android:id="@+id/text_app2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="32dp" />
+            </LinearLayout>
 
-            </ScrollView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Дополнительно -->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

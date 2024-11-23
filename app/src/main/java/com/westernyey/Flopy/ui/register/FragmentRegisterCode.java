@@ -2,6 +2,7 @@ package com.westernyey.Flopy.ui.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,11 @@ import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.ActivityMain;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FragmentRegisterCode extends Fragment {
     private int code; // Переменная для хранения кода подтверждения
-    private int status; // Переменная для хранения статуса ответа сервера
-    private String email; // Переменная для хранения email пользователя
-    private String password; // Переменная для хранения пароля пользователя
+    private String email, password; // Переменные для хранения email и пароля пользователя
     private EditText edit_code; // Поле для ввода кода подтверждения
 
     @Override
@@ -48,49 +46,73 @@ public class FragmentRegisterCode extends Fragment {
 
         // Обработка нажатия на кнопку отправки кода
         but_send.setOnClickListener(v -> {
-            String enteredCode = edit_code.getText().toString(); // Получаем введенный код
+            try {
+                String enteredCode = edit_code.getText().toString(); // Получаем введенный код
 
-            if (!enteredCode.isEmpty() && Integer.parseInt(enteredCode) == code) {
-                // Отправка запроса на сервер для добавления нового пользователя
-                new RequestUtils(this, "add_new_person_route", "POST",
-                        "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}", callback).execute();
-            } else {
-                // Вывод сообщения о неверном коде
-                ToastUtils.showShortToast(getContext(), "Неверный код");
-                edit_code.setText(""); // Очистка поля ввода кода
+                if (!TextUtils.isEmpty(enteredCode) && Integer.parseInt(enteredCode) == code) {
+                    // Отправка запроса на сервер для добавления нового пользователя
+                    JSONObject loginData = new JSONObject();
+                    loginData.put("email", email);
+                    loginData.put("password", password);
+
+                    new RequestUtils(this, "add_new_person_route", "POST", loginData.toString(), callbackNewPerson).execute();
+                } else {
+                    // Вывод сообщения о неверном коде
+                    ToastUtils.showShortToast(getContext(), "Неверный код");
+                    edit_code.setText(""); // Очистка поля ввода кода
+                }
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegisterCode\", \"method\": \"but_send.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
             }
+
         });
 
         return rootView; // Возвращаем корневой вид фрагмента
     }
 
-    // Обработка ответа от сервера
-    RequestUtils.Callback callback = (fragment, result) -> {
+    // Обработка логирования на сервере
+    RequestUtils.Callback callbackLog = (fragment, result) -> {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getInt("status"); // Получаем статус из ответа
+            if (jsonObject.getInt("status") != 0){
+                showErrorToast("Ошибка логирования на сервере.");
+            }
+        } catch (Exception e) {
+            showErrorToast("Ошибка логирования на клиенте.");
+        }
+    };
 
-            if (status == 0) {
-                // Если статус 0, регистрация успешна
-                int id_person = jsonObject.getInt("id_person"); // Получаем ID пользователя
-                DataUtils.saveUserId(requireContext(), id_person); // Сохраняем ID пользователя
+    // Обработка ответа от сервера
+    RequestUtils.Callback callbackNewPerson = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            // status
+            // 0 - успешно
+            // ~ - ошибка сервера
+            if (jsonObject.getInt("status") == 0) {
+                DataUtils.saveUserId(requireContext(), jsonObject.getInt("id_person")); // Сохраняем ID пользователя
 
                 // Переход на главную активность
                 Intent intent = new Intent(requireContext(), ActivityMain.class);
                 startActivity(intent);
             } else {
-                // Обработка остальных случаев
-                handleEmptyResponse(); // Обработка пустого ответа
+                showErrorToast("Ошибка на стороне сервера ERROR: "+jsonObject.getInt("status"));
                 edit_code.setText(""); // Очистка поля ввода кода
             }
-        } catch (JSONException e) {
-            throw new RuntimeException(e); // Обработка исключения JSON
+        } catch (Exception e) {
+            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegisterCode\", \"method\": \"callbackNewPerson\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            EmptyResponse();
         }
     };
 
-    // Обработка пустого ответа от сервера
-    public void handleEmptyResponse() {
+    // Обработка ошибки запроса
+    public void EmptyResponse() {
         requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
-                "Ошибка сервера, попробуйте заново." + "\nКод: " + status)); // Показываем сообщение об ошибке
+                "Ошибка callback.")); // Показываем сообщение об ошибке
+    }
+
+    // Метод для показа сообщения об ошибке
+    private void showErrorToast(String message) {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
     }
 }

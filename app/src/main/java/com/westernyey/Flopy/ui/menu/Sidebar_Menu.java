@@ -1,7 +1,5 @@
 package com.westernyey.Flopy.ui.menu;
 
-import static com.cripochec.Flopy.ui.utils.DataUtils.clearAllData;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
+import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.profile.FragmentProfile;
 import com.westernyey.Flopy.ui.slider.FragmentSlider;
@@ -43,23 +42,12 @@ public class Sidebar_Menu extends Fragment {
 
         btn_like.setOnClickListener(v -> {
             // Обработка нажатия на кнопку btn_like
-            Fragment fragment = new FragmentProfile();
-            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
-
-            // Закрываем боковое меню
-            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
+            ToastUtils.showShortToast(requireContext(), "В разработке");
         });
 
         btn_massage.setOnClickListener(v -> {
             // Обработка нажатия на кнопку btn_massage
-            clearAllData(requireContext());
-//            Fragment fragment = new FragmentProfile();
-//            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
-//
-//            // Закрываем боковое меню
-//            DrawerLayout drawer = requireActivity().findViewById(R.id.drawer_layout);
-//            drawer.closeDrawer(GravityCompat.START);
+            ToastUtils.showShortToast(requireContext(), "В разработке");
         });
 
         btn_main.setOnClickListener(v -> {

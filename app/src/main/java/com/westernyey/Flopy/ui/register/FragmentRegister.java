@@ -1,6 +1,7 @@
 package com.westernyey.Flopy.ui.register;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,10 @@ import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FragmentRegister extends Fragment {
 
-    private int status; // Переменная для хранения статуса ответа сервера
     private EditText new_email, pas1, pas2; // Поля для ввода нового email и паролей
 
     @Override
@@ -35,83 +34,107 @@ public class FragmentRegister extends Fragment {
 
         // Обработка нажатия на кнопку регистрации
         but_register.setOnClickListener(v -> {
-            if (!new_email.getText().toString().isEmpty() && !pas1.getText().toString().isEmpty() && !pas2.getText().toString().isEmpty()) {
-                // Проверка минимальной длины паролей
-                if (pas1.getText().toString().length() >= 8 && pas2.getText().toString().length() >= 8) {
-                    // Проверка совпадения паролей
-                    if (pas1.getText().toString().equals(pas2.getText().toString())) {
-                        // Отправка запроса на сервер для регистрации
-                        new RequestUtils(this, "register_person", "POST",
-                                "{\"email\": \"" + new_email.getText().toString() + "\"}", callback).execute();
+            try {
+                String email = new_email.getText().toString();
+                String pass1 = pas1.getText().toString();
+                String pass2 = pas2.getText().toString();
+
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pass1) && !TextUtils.isEmpty(pass2)) {
+                    // Проверка минимальной длины паролей
+                    if (pass1.length() >= 8 && pass2.length() >= 8) {
+                        // Проверка совпадения паролей
+                        if (pass1.equals(pass2)) {
+                            // Отправка запроса на сервер для регистрации
+                            JSONObject loginData = new JSONObject();
+                            loginData.put("email", email);
+
+                            new RequestUtils(this, "register_person", "POST", loginData.toString(), callbackRegisterPerson).execute();
+                        } else {
+                            ToastUtils.showShortToast(getContext(), "Пароли не совпадают");
+                            clearFields(pas1, pas2);
+                        }
                     } else {
-                        // Вывод сообщения о несовпадении паролей
-                        ToastUtils.showShortToast(getContext(), "Пароли не совпадают");
-                        clearEditPassword(); // Очистка полей ввода паролей
+                        ToastUtils.showShortToast(getContext(), "Минимальная длина пароля 8 символов");
+                        clearFields(pas1, pas2);
                     }
                 } else {
-                    // Вывод сообщения о минимальной длине паролей
-                    ToastUtils.showShortToast(getContext(), "Минимальная длина пароля 8 символов");
-                    clearEditPassword(); // Очистка полей ввода паролей
+                    ToastUtils.showShortToast(getContext(), "Все поля должны быть заполнены");
                 }
-            } else {
-                // Вывод сообщения о незаполненных полях
-                ToastUtils.showShortToast(getContext(), "Все поля должны быть заполнены");
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegister\", \"method\": \"but_register.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
             }
+
         });
 
-        return rootView; // Возвращаем корневой вид фрагмента
+        return rootView;
     }
 
-    // Обработка ответа от сервера
-    RequestUtils.Callback callback = (fragment, result) -> {
+    // Обработка логирования на сервере
+    RequestUtils.Callback callbackLog = (fragment, result) -> {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getInt("status"); // Получаем статус из ответа
+            if (jsonObject.getInt("status") != 0){
+                showErrorToast("Ошибка логирования на сервере.");
+            }
+        } catch (Exception e) {
+            showErrorToast("Ошибка логирования на клиенте.");
+        }
+    };
+
+    // Обработка ответа от сервера
+    RequestUtils.Callback callbackRegisterPerson = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            int status = jsonObject.getInt("status"); // Получаем статус из ответа
+            // status
+            // 0 - успешно
+            // 1 - email уже занят
+            // ~ - ошибка сервера
             if (status == 0){
-                // Если статус 0, регистрация успешна
-                int code = jsonObject.getInt("code"); // Получаем код для верификации
 
                 fragment = new FragmentRegisterCode(); // Создаем новый фрагмент для ввода кода верификации
 
                 // Передаем данные в новый фрагмент через Bundle
                 Bundle bundle = new Bundle();
-                bundle.putInt("code", code);
+                bundle.putInt("code", jsonObject.getInt("code"));
                 bundle.putString("email", new_email.getText().toString());
                 bundle.putString("password", pas1.getText().toString());
                 fragment.setArguments(bundle);
 
                 // Заменяем текущий фрагмент на фрагмент ввода кода
                 FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment);
-            } else if (status == 1){
-                // Если статус 1, email уже занят
-                requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "Данный email уже занят"));
-                clearEditText(); // Очистка всех полей ввода
-            } else {
-                // Обработка остальных случаев
-                handleEmptyResponse(); // Обработка пустого ответа
-                clearEditText(); // Очистка всех полей ввода
             }
-        } catch (JSONException e) {
-            throw new RuntimeException(e); // Обработка исключения JSON
+
+            else if (status == 1){
+                showErrorToast("Данный email уже занят");
+                clearFields(new_email, pas1, pas2);
+            }
+
+            else {
+                showErrorToast("Ошибка на стороне сервера ERROR: "+status);
+                clearFields(new_email, pas1, pas2);
+            }
+        } catch (Exception e) {
+            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegister\", \"method\": \"callbackRegisterPerson\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            EmptyResponse();
         }
     };
 
-    // Очистка всех полей для ввода текста
-    public void clearEditText() {
-        new_email.setText("");
-        pas1.setText("");
-        pas2.setText("");
+    // Очистка всех полей
+    private void clearFields(EditText... fields) {
+        for (EditText field : fields) {
+            field.setText("");
+        }
     }
 
-    // Очистка полей для ввода паролей
-    public void clearEditPassword() {
-        pas1.setText("");
-        pas2.setText("");
-    }
-
-    // Обработка пустого ответа от сервера
-    public void handleEmptyResponse() {
+    // Обработка ошибки запроса
+    public void EmptyResponse() {
         requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
-                "Ошибка сервера, попробуйте заново." + "\nКод: " + status)); // Показываем сообщение об ошибке
+                "Ошибка callback.")); // Показываем сообщение об ошибке
+    }
+
+    // Метод для показа сообщения об ошибке
+    private void showErrorToast(String message) {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
     }
 }

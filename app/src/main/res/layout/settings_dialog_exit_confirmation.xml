@@ -40,12 +40,12 @@
             android:id="@+id/btn_no"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_background_purple"
             android:text="Нет"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_message"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -53,13 +53,13 @@
             android:id="@+id/btn_yes"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginStart="60dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_background_white"
             android:text="Да"
             android:textColor="@color/dark_grey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_message"
             tools:ignore="TouchTargetSizeCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>

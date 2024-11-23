@@ -68,12 +68,12 @@ public class CardAdapter extends ArrayAdapter<CardModel> {
         for (String info : infoList) {
             TextView textView = new TextView(getContext());
             textView.setText(info);
-            textView.setBackgroundResource(R.drawable.button_background_purple); // Добавьте фоновый ресурс
-            textView.setPadding(8, 4, 8, 4); // Добавьте отступы
+            textView.setBackgroundResource(R.drawable.item_background_gray);
+            textView.setPadding(20, 10, 20, 10); // отступы
             FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(4, 4, 4, 4); // Установите отступы между элементами
+            params.setMargins(0, 0, 20, 20); // отступы между элементами
             textView.setLayoutParams(params);
             flexboxLayout.addView(textView);
         }

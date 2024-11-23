@@ -1,9 +1,5 @@
 package com.westernyey.Flopy.ui.profile;
 
-import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto1;
-import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto2;
-import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto3;
-import static com.cripochec.Flopy.ui.utils.DataUtils.getPhoto4;
 import static com.cripochec.Flopy.ui.utils.DataUtils.getUserId;
 import static com.cripochec.Flopy.ui.utils.DataUtils.saveLastFragmentPosition;
 
@@ -27,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.cripochec.Flopy.ui.utils.DataUtils;
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
 import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
@@ -38,17 +33,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class FragmentProfile extends Fragment {
 
     private int status;
     private ProgressBar progressBar;
     private TextView tvFillPercentage, name_and_age;
     private LinearLayout containerAboutMe;
+    private ImageView[] photoImageViews;
 
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        // нихуя не нормализованно
 
         // Инициализация кнопок и бокового меню
         Button btnOpenMenu = rootView.findViewById(R.id.btn_open_menu);
@@ -59,47 +61,14 @@ public class FragmentProfile extends Fragment {
         progressBar = rootView.findViewById(R.id.progress_circular);
         tvFillPercentage = rootView.findViewById(R.id.tv_progress_percentage);
         name_and_age = rootView.findViewById(R.id.name_and_age);
-        ImageView photo1 = rootView.findViewById(R.id.profile_image_view_1);
-        ImageView photo2 = rootView.findViewById(R.id.profile_image_view_2);
-        ImageView photo3 = rootView.findViewById(R.id.profile_image_view_3);
-        ImageView photo4 = rootView.findViewById(R.id.profile_image_view_4);
 
-        // Устанавливаем прогресс профиля
-        setProfileProgress(DataUtils.getFullness(requireContext()));
-
-        // Устанавливаем фотографии профиля
-        try {
-            String photo1_url = getPhoto1(requireContext());
-            if (!photo1_url.equals("add_photo")){
-                Glide.with(this).load(photo1_url).into(photo1);
-            } else {
-                photo1.setVisibility(View.GONE);
-            }
-
-            String photo2_url = getPhoto2(requireContext());
-            if (!photo2_url.equals("add_photo")){
-                Glide.with(this).load(photo2_url).into(photo2);
-            } else {
-                photo2.setVisibility(View.GONE);
-            }
-
-            String photo3_url = getPhoto3(requireContext());
-            if (!photo3_url.equals("add_photo")){
-                Glide.with(this).load(photo3_url).into(photo3);
-            } else {
-                photo3.setVisibility(View.GONE);
-            }
-
-            String photo4_url = getPhoto4(requireContext());
-            if (!photo4_url.equals("add_photo")){
-                Glide.with(this).load(photo4_url).into(photo4);
-            } else {
-                photo4.setVisibility(View.GONE);
-            }
-        } catch (Exception e){
-
-        }
-
+        // Фотографии
+        photoImageViews = new ImageView[]{
+                rootView.findViewById(R.id.profile_image_view_1),
+                rootView.findViewById(R.id.profile_image_view_2),
+                rootView.findViewById(R.id.profile_image_view_3),
+                rootView.findViewById(R.id.profile_image_view_4)
+        };
 
 
         btnOpenMenu.setOnClickListener(v -> {
@@ -168,17 +137,35 @@ public class FragmentProfile extends Fragment {
             JSONObject jsonObject = new JSONObject(result);
             this.status = jsonObject.getInt("status");
             if (status == 0){
+                // Установка фотографий
+                List<String> photo_url = new ArrayList<>();
+                photo_url.add(jsonObject.getString("photo1_url"));
+                photo_url.add(jsonObject.getString("photo2_url"));
+                photo_url.add(jsonObject.getString("photo3_url"));
+                photo_url.add(jsonObject.getString("photo4_url"));
+
+                for (int i = 0; i<4; i++){
+                    if (!Objects.equals(photo_url.get(i), "None")){
+                        int finalI = i;
+                        requireActivity().runOnUiThread(() ->
+                                Glide.with(this).load(photo_url.get(finalI)).into(photoImageViews[finalI]));
+                    } else {
+                        photoImageViews[i].setVisibility(View.GONE);
+                    }
+
+                }
 
                 // Получение "about_me" и преобразование его в массив строк
                 JSONArray aboutMeArray = jsonObject.getJSONArray("about_me");
                 String[] about_me_list = new String[aboutMeArray.length()];
                 for (int i = 0; i < aboutMeArray.length(); i++) {
                     about_me_list[i] = aboutMeArray.getString(i);
-
                 }
 
                 requireActivity().runOnUiThread(() ->{
                     try {
+                        // Устанавливаем прогресс профиля
+                        setProfileProgress(Integer.parseInt(jsonObject.getString("fullness")));
                         for (String s : about_me_list) {
                             addTextView(s);
                         }

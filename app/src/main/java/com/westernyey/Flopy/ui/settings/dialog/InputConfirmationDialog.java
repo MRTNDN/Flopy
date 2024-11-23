@@ -13,16 +13,6 @@ import com.westernyey.Flopy.R;
 
 public class InputConfirmationDialog extends BottomSheetDialogFragment {
 
-    private final OnInputConfirmedListener listener;
-
-    public interface OnInputConfirmedListener {
-        void onExitConfirmed();
-    }
-
-    public InputConfirmationDialog(OnInputConfirmedListener listener) {
-        this.listener = listener;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

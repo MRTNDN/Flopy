@@ -36,7 +36,7 @@ public class RequestUtilsPhoto {
     }
 
     public void execute() {
-        String URL_SERVER = "http://192.168.0.104:5000/" + requestLine;
+        String URL_SERVER = DataUtils.IP + requestLine;
 
         // Формируем multipart body
         RequestBody requestBody = new MultipartBody.Builder()

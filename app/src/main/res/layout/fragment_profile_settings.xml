@@ -205,7 +205,8 @@
                     <ImageView
                         android:id="@+id/image1"
                         android:layout_width="180dp"
-                        android:layout_height="320dp" />
+                        android:layout_height="320dp"
+                        android:background="@drawable/add_photo" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -219,7 +220,8 @@
                     <ImageView
                         android:id="@+id/image2"
                         android:layout_width="100dp"
-                        android:layout_height="100dp" />
+                        android:layout_height="100dp"
+                        android:background="@drawable/add_photo" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -235,7 +237,8 @@
                     <ImageView
                         android:id="@+id/image3"
                         android:layout_width="100dp"
-                        android:layout_height="100dp" />
+                        android:layout_height="100dp"
+                        android:background="@drawable/add_photo" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -250,7 +253,8 @@
                     <ImageView
                         android:id="@+id/image4"
                         android:layout_width="100dp"
-                        android:layout_height="100dp"/>
+                        android:layout_height="100dp"
+                        android:background="@drawable/add_photo" />
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

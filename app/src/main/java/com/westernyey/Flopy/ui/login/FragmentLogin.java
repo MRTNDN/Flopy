@@ -2,6 +2,7 @@ package com.westernyey.Flopy.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +20,14 @@ import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.ActivityMain;
 import com.westernyey.Flopy.ui.register.FragmentRegister;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FragmentLogin extends Fragment {
 
-    private EditText email; // Поле для ввода email
-    private EditText password; // Поле для ввода пароля
-    private int status; // Переменная для хранения статуса ответа сервера
+    private EditText email, password; // Поле для ввода email и пароля
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Инициализация интерфейса фрагмента
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         email = rootView.findViewById(R.id.editEmail); // Находим поле для ввода email
@@ -39,18 +36,26 @@ public class FragmentLogin extends Fragment {
         TextView but_register = rootView.findViewById(R.id.textRegister); // Находим текст для перехода к регистрации
 
         but_login.setOnClickListener(v -> {
-            // Обработка нажатия на кнопку but_login
-            String enteredEmail = email.getText().toString(); // Получаем введенный email
-            String enteredPassword = password.getText().toString(); // Получаем введенный пароль
+            try {
+                // Обработка нажатия на кнопку but_login
+                String enteredEmail = email.getText().toString(); // Получаем введенный email
+                String enteredPassword = password.getText().toString(); // Получаем введенный пароль
 
-            if (!enteredEmail.isEmpty() && !enteredPassword.isEmpty()){
-                // Отправляем запрос на сервер для входа
-                new RequestUtils(this, "entry_person", "POST",
-                        "{\"email\": \""+enteredEmail+"\", \"password\": \""+enteredPassword+"\"}", callback).execute();
-            } else {
-                // Показываем сообщение об ошибке, если поля пусты
-                ToastUtils.showShortToast(getContext(), "Все поля должны быть заполнены");
-                clearEditText(); // Очищаем поля ввода
+                if (!TextUtils.isEmpty(enteredEmail) && !TextUtils.isEmpty(enteredPassword)){
+
+                    // Отправляем запрос на сервер для входа
+                    JSONObject loginData = new JSONObject();
+                    loginData.put("email", enteredEmail);
+                    loginData.put("password", enteredPassword);
+                    new RequestUtils(this, "entry_person", "POST", loginData.toString(), callbackEntryPerson).execute();
+
+                } else {
+                    // Показываем сообщение об ошибке, если поля пусты
+                    ToastUtils.showShortToast(getContext(), "Все поля должны быть заполнены");
+                    clearEditText(); // Очищаем поля ввода
+                }
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentLogin\", \"method\": \"but_login.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
             }
         });
 
@@ -60,40 +65,58 @@ public class FragmentLogin extends Fragment {
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment); // Заменяем текущий фрагмент на фрагмент регистрации
         });
 
-        return rootView; // Возвращаем корневой вид фрагмента
+        return rootView;
     }
 
+    // Обработка логирования на сервере
+    RequestUtils.Callback callbackLog = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getInt("status") != 0){
+                showErrorToast("Ошибка логирования на сервере.");
+            }
+        } catch (Exception e) {
+            showErrorToast("Ошибка логирования на клиенте.");
+        }
+    };
+
     // Обработка ответа от сервера
-    RequestUtils.Callback callback = (fragment, result) -> {
+    RequestUtils.Callback callbackEntryPerson = (fragment, result) -> {
         try {
             // Получение JSON объекта из ответа сервера
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getInt("status"); // Получаем статус из ответа
+            int status = jsonObject.getInt("status"); // Получаем статус из ответа
 
+            // status
+            // 0 - успешно
+            // 1 - email не найден
+            // 2 - неверный логин или пароль
+            // ~ - ошибка сервера
             if (status == 0){
-                // Если статус 0, вход успешен
-                int id_person = jsonObject.getInt("id_person"); // Получаем ID пользователя
-                DataUtils.saveUserId(requireContext(), id_person); // Сохраняем ID пользователя
+                DataUtils.saveUserId(requireContext(), jsonObject.getInt("id_person")); // Сохраняем ID пользователя
                 DataUtils.saveEntry(requireContext(), false); // Сохраняем информацию о входе
 
-                Intent intent = new Intent(requireContext(), ActivityMain.class); // Создаем интент для перехода в основную активность
+                Intent intent = new Intent(requireContext(), ActivityMain.class);
                 startActivity(intent); // Запускаем основную активность
-            } else if (status == 1){
-                // Если статус 1, email не найден
-                requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "email не найден")); // Показываем сообщение об ошибке
-                clearEditText(); // Очищаем поля ввода
-            } else if (status == 2){
-                // Если статус 2, неверный логин или пароль
-                requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "Неверный логин или пароль")); // Показываем сообщение об ошибке
-                clearEditText(); // Очищаем поля ввода
-            } else {
-                // Во всех остальных случаях, ошибка сервера
-                handleEmptyResponse(); // Обрабатываем пустой ответ
+            }
+
+            else if (status == 1){
+                showErrorToast("email не найден");
                 clearEditText(); // Очищаем поля ввода
             }
-        } catch (JSONException e) {
-            // Обрабатываем исключение JSON
-            throw new RuntimeException(e);
+
+            else if (status == 2){
+                showErrorToast("Неверный логин или пароль");
+                clearEditText(); // Очищаем поля ввода
+            }
+
+            else {
+                showErrorToast("Ошибка на стороне сервера ERROR: "+status);
+                clearEditText(); // Очищаем поля ввода
+            }
+        } catch (Exception e) {
+            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentLogin\", \"method\": \"callbackEntryPerson\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            EmptyResponse();
         }
     };
 
@@ -103,9 +126,14 @@ public class FragmentLogin extends Fragment {
         password.setText(""); // Очищаем поле пароля
     }
 
-    // Обработка пустого ответа от сервера
-    public void handleEmptyResponse() {
+    // Обработка ошибки запроса
+    public void EmptyResponse() {
         requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
-                "Ошибка сервера, попробуйте заново."+ "\nКод: "+status)); // Показываем сообщение об ошибке
+                "Ошибка callback.")); // Показываем сообщение об ошибке
+    }
+
+    // Метод для показа сообщения об ошибке
+    private void showErrorToast(String message) {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
     }
 }

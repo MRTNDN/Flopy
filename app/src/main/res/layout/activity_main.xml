@@ -21,17 +21,18 @@
         android:name="com.westernyey.Flopy.ui.slider.FragmentSlider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:layout="@layout/fragment_slider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout="@layout/fragment_slider" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- Пользовательское боковое меню -->
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/sidebar_menu"
         android:name="com.westernyey.Flopy.ui.menu.Sidebar_Menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start" />
+        android:layout_gravity="start"
+        tools:layout="@layout/sidebar_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
