@@ -77,7 +77,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fr_activity_start"
-            android:name="com.westernyey.Flopy.ui.login.FragmentInputSelection"
+            android:name="com.westernyey.Flopy.ui.loginAndRegister.FragmentInputSelection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"

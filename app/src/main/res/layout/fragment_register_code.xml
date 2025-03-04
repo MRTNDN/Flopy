@@ -8,9 +8,24 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".ui.register.FragmentRegisterCode" >
+    tools:context=".ui.loginAndRegister.FragmentRegisterCode" >
 
     <!-- Надпись "Введите разовый код" -->
+    <TextView
+        android:id="@+id/textTimerCode2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:padding="2dp"
+        android:text="повторно через 60 с."
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/editCode"
+        app:layout_constraintTop_toBottomOf="@+id/editCode"
+        tools:ignore="HardcodedText" />
+
     <TextView
         android:id="@+id/textViewLabel5"
         android:layout_width="wrap_content"
@@ -75,7 +90,7 @@
         android:id="@+id/buttonCodeSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
@@ -87,22 +102,8 @@
         app:layout_constraintEnd_toEndOf="@+id/editCode"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/editCode"
-        app:layout_constraintTop_toBottomOf="@+id/editCode" />
+        app:layout_constraintTop_toBottomOf="@+id/textTimerCode2" />
 
     <!-- Уточняющяя надпись" -->
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Если код не отправился вернитесь назад и отправте данные заново"
-        android:textColor="#FFFFFF"
-        android:textSize="17sp"
-        android:textStyle="italic"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="@+id/buttonCodeSend"
-        app:layout_constraintStart_toStartOf="@+id/buttonCodeSend"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCodeSend"
-        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

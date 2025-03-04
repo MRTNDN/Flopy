@@ -35,11 +35,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FragmentProfile extends Fragment {
 
-    private int status;
     private ProgressBar progressBar;
     private TextView tvFillPercentage, name_and_age;
     private LinearLayout containerAboutMe;
@@ -49,9 +47,7 @@ public class FragmentProfile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        // нихуя не нормализованно
-
+        try {
         // Инициализация кнопок и бокового меню
         Button btnOpenMenu = rootView.findViewById(R.id.btn_open_menu);
         Button btnOpenSet = rootView.findViewById(R.id.btn_open_settings);
@@ -89,7 +85,16 @@ public class FragmentProfile extends Fragment {
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
         });
 
-        new RequestUtils(this, "pars_persons_info", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackSetData).execute();
+        // Отправка запроса на сервер для регистрации
+        JSONObject loginData = new JSONObject();
+            loginData.put("id_person", getUserId(requireContext()));
+
+
+        new RequestUtils(this, "pars_persons_info", "POST", loginData.toString(), callbackSetData).execute();
+
+        } catch (JSONException e) {
+            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentProfile\", \"method\": \"onCreateView\", \"error\": \"" + e + "\"}", callbackLog).execute();
+        }
 
         return rootView;
     }
@@ -129,69 +134,106 @@ public class FragmentProfile extends Fragment {
         containerAboutMe.addView(linearLayout);
     }
 
+    // Обработка логирования на сервере
+    RequestUtils.Callback callbackLog = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getInt("status") != 0){
+                showErrorToast("Ошибка логирования на сервере.");
+            }
+        } catch (Exception e) {
+            showErrorToast("Ошибка логирования на клиенте.");
+        }
+    };
 
     @SuppressLint("SetTextI18n")
     RequestUtils.Callback callbackSetData = (fragment, result) -> {
-        // Обработка ответа
         try {
             JSONObject jsonObject = new JSONObject(result);
-            this.status = jsonObject.getInt("status");
-            if (status == 0){
-                // Установка фотографий
+            int status = jsonObject.optInt("status", -1);
+
+            if (status == 0) {
+                // Загрузка фотографий
                 List<String> photo_url = new ArrayList<>();
-                photo_url.add(jsonObject.getString("photo1_url"));
-                photo_url.add(jsonObject.getString("photo2_url"));
-                photo_url.add(jsonObject.getString("photo3_url"));
-                photo_url.add(jsonObject.getString("photo4_url"));
+                photo_url.add(jsonObject.optString("photo1_url", ""));
+                photo_url.add(jsonObject.optString("photo2_url", ""));
+                photo_url.add(jsonObject.optString("photo3_url", ""));
+                photo_url.add(jsonObject.optString("photo4_url", ""));
 
-                for (int i = 0; i<4; i++){
-                    if (!Objects.equals(photo_url.get(i), "None")){
-                        int finalI = i;
-                        requireActivity().runOnUiThread(() ->
-                                Glide.with(this).load(photo_url.get(finalI)).into(photoImageViews[finalI]));
-                    } else {
-                        photoImageViews[i].setVisibility(View.GONE);
-                    }
-
-                }
-
-                // Получение "about_me" и преобразование его в массив строк
-                JSONArray aboutMeArray = jsonObject.getJSONArray("about_me");
-                String[] about_me_list = new String[aboutMeArray.length()];
-                for (int i = 0; i < aboutMeArray.length(); i++) {
-                    about_me_list[i] = aboutMeArray.getString(i);
-                }
-
-                requireActivity().runOnUiThread(() ->{
-                    try {
-                        // Устанавливаем прогресс профиля
-                        setProfileProgress(Integer.parseInt(jsonObject.getString("fullness")));
-                        for (String s : about_me_list) {
-                            addTextView(s);
+                requireActivity().runOnUiThread(() -> {
+                    for (int i = 0; i < 4; i++) {
+                        if (!"None".equals(photo_url.get(i))) {
+                            Glide.with(this)
+                                    .load(photo_url.get(i))
+                                    .placeholder(R.drawable.placeholder)
+                                    .error(R.drawable.error_image)
+                                    .into(photoImageViews[i]);
+                        } else {
+                            photoImageViews[i].setVisibility(View.GONE);
                         }
-                        name_and_age.setText(jsonObject.getString("name")+", "+jsonObject.getString("age"));
-                    } catch (Exception e){
-                        ToastUtils.showShortToast(requireContext(), "Error: "+e);
                     }
                 });
+
+
+                // Обработка "about_me"
+                JSONArray aboutMeArray = jsonObject.optJSONArray("about_me");
+                if (aboutMeArray != null) {
+                    requireActivity().runOnUiThread(() -> {
+                        try {
+                            for (int i = 0; i < aboutMeArray.length(); i++) {
+                                addTextView(aboutMeArray.optString(i, ""));
+                            }
+                        } catch (Exception e) {
+                            ToastUtils.showShortToast(requireContext(), "Error: " + e.getMessage());
+                        }
+                    });
+                }
+
+                // Установка имени и возраста
+                String name = jsonObject.optString("name", "Без имени");
+                String age = jsonObject.optString("age", "??");
+                requireActivity().runOnUiThread(() -> name_and_age.setText(name + ", " + age));
+
+                // Установка прогресса профиля
+                String fullnessStr = jsonObject.optString("fullness", "0");
+                int fullness = 0;
+                try {
+                    fullness = Integer.parseInt(fullnessStr);
+                } catch (NumberFormatException ignored) {}
+
+                setProfileProgress(fullness);
+
             } else {
-                handleEmptyResponse();
+                showErrorToast("Ошибка на стороне сервера ERROR: " + status);
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            requireActivity().runOnUiThread(() -> {
+                new RequestUtils(this, "log", "POST",
+                        "{\"module\": \"FragmentProfile\", \"method\": \"callbackSetData\", \"error\": \"" + e + "\"}",
+                        callbackLog).execute();
+                EmptyResponse();
+            });
         }
     };
 
 
     @SuppressLint("SetTextI18n")
     private void setProfileProgress(int progress) {
-        progressBar.setProgress(progress);
-        tvFillPercentage.setText(progress + "%");
+        requireActivity().runOnUiThread(() -> {
+            progressBar.setProgress(progress);
+            tvFillPercentage.setText(progress + "%");
+        });
     }
 
-    // Обработка пустого ответа от сервера
-    public void handleEmptyResponse() {
+
+    // Обработка ошибки запроса
+    public void EmptyResponse() {
         requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
-                "Ошибка сервера, попробуйте заново."+ "\nКод: "+status)); // Показываем сообщение об ошибке
+                "Ошибка callback.")); // Показываем сообщение об ошибке
+    }
+
+    // Метод для показа сообщения об ошибке
+    private void showErrorToast(String message) {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
     }
 }

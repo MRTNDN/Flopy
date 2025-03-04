@@ -1,121 +1,167 @@
 package com.westernyey.Flopy.ui.settings.blackList;
 
+import static com.cripochec.Flopy.ui.utils.DataUtils.getUserId;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cripochec.Flopy.ui.utils.FragmentUtils;
+import com.cripochec.Flopy.ui.utils.RequestUtils;
+import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.settings.FragmentSettings;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsFragmentBlackList extends Fragment {
-    private LinearLayout userContainer;
-    private List<BlacklistUser> blacklistUsers = new ArrayList<>();
+    private final List<BlacklistUser> blacklistUsers = new ArrayList<>();
+    private ItemBlacklistAdapter adapter;
 
-    // Пример JSON строки (затем вы замените запросом к серверу)
-    private String jsonString = "[{\"id\":\"1\",\"name\":\"John\",\"age\":30,\"photoResource\":2131165292}," +
-            "{\"id\":\"2\",\"name\":\"Alice\",\"age\":25,\"photoResource\":2131165293}," +
-            "{\"id\":\"3\",\"name\":\"Bob\",\"age\":28,\"photoResource\":2131165294}]";
-
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.settings_fragment_black_list, container, false);
 
         Button btnBac = rootView.findViewById(R.id.btn_bac_settings);
-        userContainer = rootView.findViewById(R.id.userContainer);
-
         btnBac.setOnClickListener(v -> {
             Fragment fragment = new FragmentSettings();
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
         });
 
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Загрузка списка пользователей из "чёрного списка"
-        loadBlacklistUsers();
+        adapter = new ItemBlacklistAdapter(getContext(), blacklistUsers, this::removeUserFromBlacklist);
+        recyclerView.setAdapter(adapter);
 
-        // Добавление пользователей в LinearLayout
-        addUsersToLayout();
+        try {
+            JSONObject jsonRequestBody = new JSONObject();
+            jsonRequestBody.put("id_person", getUserId(requireContext()));
 
+            new RequestUtils(this, "get_blocked_users", "POST", jsonRequestBody.toString() , callbackGetBlockedUsers).execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new RequestUtils(this, "log", "POST", "{\"module\": \"SettingsFragmentBlackList\", \"method\": \"get_blocked_users.request\", \"error\": \"" + e + "\"}", callbackLog).execute();
+        }
         return rootView;
     }
 
-    // Временно загружаем данные из строки json
-    private void loadBlacklistUsers() {
-        // Заглушка для обработки JSON (замените этот блок, когда будет готов запрос)
-        blacklistUsers.add(new BlacklistUser("1", "Bober", 30, R.drawable.bober));
-        blacklistUsers.add(new BlacklistUser("2", "DjTape", 25, R.drawable.djtape));
-        blacklistUsers.add(new BlacklistUser("3", "Ezh", 28, R.drawable.ezh));
-    }
+    private void loadBlacklistUsers(JSONArray blockList) {
+        try {
+            blacklistUsers.clear(); // Очищаем список перед загрузкой новых данных
 
-    // Метод для добавления пользователей в layout
-    private void addUsersToLayout() {
-        for (BlacklistUser user : blacklistUsers) {
-            // Создаем горизонтальный LinearLayout для каждого пользователя
-            LinearLayout userLayout = new LinearLayout(getContext());
-            userLayout.setOrientation(LinearLayout.HORIZONTAL);
+            for (int i = 0; i < blockList.length(); i++) {
+                JSONObject userJson = blockList.getJSONObject(i);
+                String id = userJson.getString("id");
+                String name = userJson.getString("name");
+                int age = userJson.getInt("age");
+                String photoUrl = userJson.getString("photo_url");
 
-            // Добавляем фото
-            ImageView imageView = new ImageView(getContext());
-            imageView.setImageResource(user.getPhotoResource());
-            // Устанавливаем размер изображения 100x100 пикселей
-            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(100, 100);
-            imageView.setLayoutParams(imageParams);
-
-            userLayout.addView(imageView);
-
-            // Создаем текст с именем и возрастом
-            TextView textView = new TextView(getContext());
-            textView.setText(user.getName() + ", " + user.getAge());
-            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            textParams.setMargins(16, 0, 0, 0); // Небольшой отступ
-            textView.setLayoutParams(textParams);
-            userLayout.addView(textView);
-
-            // Добавляем кнопку "Удалить"
-            Button deleteButton = new Button(getContext());
-            deleteButton.setText("Удалить");
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    removeUserFromBlacklist(user);
-                }
-            });
-
-            // Добавляем кнопку к пользовательскому layout'у
-            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            buttonParams.setMargins(0, 0, 16, 0); // Отступ справа
-            userLayout.addView(deleteButton, buttonParams);
-
-            // Добавляем горизонтальный layout в основной вертикальный
-            userContainer.addView(userLayout);
+                // Создание объекта пользователя
+                blacklistUsers.add(new BlacklistUser(id, name, age, photoUrl));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new RequestUtils(this, "log", "POST", "{\"module\": \"SettingsFragmentBlackList\", \"method\": \"loadBlacklistUsers\", \"error\": \"" + e + "\"}", callbackLog).execute();
         }
     }
 
-    // Метод для удаления пользователя из списка
-    private void removeUserFromBlacklist(BlacklistUser user) {
-        // Удаляем пользователя из списка
-        blacklistUsers.remove(user);
 
-        // Очищаем контейнер и заново добавляем обновленный список пользователей
-        userContainer.removeAllViews();
-        addUsersToLayout();
+    @SuppressLint("NotifyDataSetChanged")
+    private void removeUserFromBlacklist(BlacklistUser user) {
+        // Отправляем запрос на сервер
+        try {
+            JSONObject jsonRequestBody = new JSONObject();
+            jsonRequestBody.put("id_person", getUserId(requireContext()));
+            jsonRequestBody.put("id_block", user.getId());
+
+            // Колбэк для обработки ответа
+            RequestUtils.Callback callbackRemoveBlackList = (fragment, result) -> {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("status") == 0) {
+                        requireActivity().runOnUiThread(() -> {
+                            blacklistUsers.remove(user);  // Удаляем локально
+                            adapter.notifyDataSetChanged();  // Обновляем UI
+                        });
+                    } else {
+                        showErrorToast("Ошибка на сервере, status: " + jsonObject.getInt("status"));
+                    }
+                } catch (JSONException e) {
+                    new RequestUtils(this, "log", "POST", "{\"module\": \"SettingsFragmentBlackList\", \"method\": \"callbackRemoveBlackList\", \"error\": \"" + e + "\"}", callbackLog).execute();
+                    EmptyResponse();
+                }
+            };
+
+            // Отправляем запрос на удаление
+            new RequestUtils(this, "remove_black_list", "POST", jsonRequestBody.toString(), callbackRemoveBlackList).execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            new RequestUtils(this, "log", "POST", "{\"module\": \"SettingsFragmentBlackList\", \"method\": \"remove_black_list.request\", \"error\": \"" + e + "\"}", callbackLog).execute();
+        }
     }
 
+    // Обработка логирования на сервере
+    RequestUtils.Callback callbackLog = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getInt("status") != 0){
+                showErrorToast("Ошибка логирования на сервере.");
+            }
+        } catch (Exception e) {
+            showErrorToast("Ошибка логирования на клиенте.");
+        }
+    };
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    RequestUtils.Callback callbackGetBlockedUsers = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getInt("status") == 0) {
+                JSONArray blockList = jsonObject.getJSONArray("block_list");
+                requireActivity().runOnUiThread(() -> {
+                    loadBlacklistUsers(blockList);
+                    adapter.notifyDataSetChanged();
+
+                    // Проверка на пустоту списка
+                    if (blacklistUsers.isEmpty()) {
+                        showErrorToast("Список пуст");
+                    }
+                });
+            } else {
+                showErrorToast("Ошибка на сервере, status: " + jsonObject.getInt("status"));
+            }
+        } catch (JSONException e) {
+            new RequestUtils(this, "log", "POST", "{\"module\": \"SettingsFragmentBlackList\", \"method\": \"callbackGetBlockedUsers\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            EmptyResponse();
+        }
+    };
+
+
+    // Обработка ошибки запроса
+    public void EmptyResponse() {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
+                "Ошибка callback.")); // Показываем сообщение об ошибке
+    }
+
+    // Метод для показа сообщения об ошибке
+    private void showErrorToast(String message) {
+        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
+    }
 }

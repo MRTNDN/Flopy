@@ -50,7 +50,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Катя, 18"
                 android:textColor="@color/black"
                 android:textSize="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,6 +84,7 @@
                             android:id="@+id/profile_image_view_1"
                             android:layout_width="145dp"
                             android:layout_height="145dp"
+                            android:scaleType="centerCrop"
                             android:src="@color/dark_grey"/>
                     </androidx.cardview.widget.CardView>
 
@@ -99,6 +99,7 @@
                             android:id="@+id/profile_image_view_2"
                             android:layout_width="145dp"
                             android:layout_height="145dp"
+                            android:scaleType="centerCrop"
                             android:src="@color/dark_grey"/>
                     </androidx.cardview.widget.CardView>
 
@@ -113,6 +114,7 @@
                             android:id="@+id/profile_image_view_3"
                             android:layout_width="145dp"
                             android:layout_height="145dp"
+                            android:scaleType="centerCrop"
                             android:src="@color/dark_grey"/>
                     </androidx.cardview.widget.CardView>
 
@@ -126,6 +128,7 @@
                             android:id="@+id/profile_image_view_4"
                             android:layout_width="145dp"
                             android:layout_height="145dp"
+                            android:scaleType="centerCrop"
                             android:src="@color/dark_grey"/>
                     </androidx.cardview.widget.CardView>
 
@@ -217,7 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Запони профиль"
+                android:text="Заполни профиль"
                 android:textColor="@color/black"
                 android:textSize="25dp"
                 app:layout_constraintEnd_toEndOf="parent"

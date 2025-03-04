@@ -18,7 +18,6 @@
     <!-- Основной контейнер -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fr_activity_main"
-        android:name="com.westernyey.Flopy.ui.slider.FragmentSlider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_slider"

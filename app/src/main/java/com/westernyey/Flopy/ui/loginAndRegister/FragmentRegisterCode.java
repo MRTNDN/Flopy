@@ -1,7 +1,9 @@
-package com.westernyey.Flopy.ui.register;
+package com.westernyey.Flopy.ui.loginAndRegister;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.cripochec.Flopy.ui.utils.DataUtils;
@@ -32,6 +35,7 @@ public class FragmentRegisterCode extends Fragment {
 
         Button but_send = rootView.findViewById(R.id.buttonCodeSend); // Кнопка для отправки кода
         TextView email_text_view = rootView.findViewById(R.id.emailTextView); // Текстовое поле для отображения email
+        TextView timer_code_text_view = rootView.findViewById(R.id.textTimerCode2); // Таймер для повторной отпраки кода
         edit_code = rootView.findViewById(R.id.editCode); // Поле для ввода кода подтверждения
 
         // Получение данных из Bundle
@@ -43,6 +47,10 @@ public class FragmentRegisterCode extends Fragment {
         }
 
         email_text_view.setText(email); // Отображаем email в текстовом поле
+
+        timer_code_text_view.setEnabled(false); // Отключаем нажатие
+        timer_code_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.black_overlay)); // Делаем текст серым
+        startTimer(timer_code_text_view); // Запускаем таймер
 
         // Обработка нажатия на кнопку отправки кода
         but_send.setOnClickListener(v -> {
@@ -67,8 +75,46 @@ public class FragmentRegisterCode extends Fragment {
 
         });
 
+        // Обработка нажатия на кнопку отправки повторной отправки кода
+        timer_code_text_view.setOnClickListener(v -> {
+            try {
+                edit_code.setText(""); // Очистка поля ввода кода
+
+                // Отправка запроса на сервер для регистрации
+                JSONObject loginData = new JSONObject();
+                loginData.put("email", email);
+
+                timer_code_text_view.setEnabled(false); // Отключаем нажатие
+                timer_code_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.black_overlay)); // Делаем текст серым
+                startTimer(timer_code_text_view); // Запускаем таймер
+
+                new RequestUtils(this, "one_time_code", "POST", loginData.toString(), callbackOneTimeCode).execute();
+
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegisterCode\", \"method\": \"timer_code_text_view.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            }
+
+        });
+
         return rootView; // Возвращаем корневой вид фрагмента
     }
+
+
+    private void startTimer(TextView timerText) {
+        new CountDownTimer(40000, 1000) { // 40 секунд с шагом в 1 секунду
+            @SuppressLint("SetTextI18n")
+            public void onTick(long millisUntilFinished) {
+                timerText.setText("Повторно через " + (millisUntilFinished / 1000) + "с.");
+            }
+
+            public void onFinish() {
+                timerText.setText("Отправить повторно");
+                timerText.setTextColor(ContextCompat.getColor(requireContext(), R.color.white)); // Делаем текст белым
+                timerText.setEnabled(true); // Разблокируем кнопку
+            }
+        }.start();
+    }
+
 
     // Обработка логирования на сервере
     RequestUtils.Callback callbackLog = (fragment, result) -> {
@@ -101,6 +147,19 @@ public class FragmentRegisterCode extends Fragment {
             }
         } catch (Exception e) {
             new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegisterCode\", \"method\": \"callbackNewPerson\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            EmptyResponse();
+        }
+    };
+
+    // Обработка ответа от сервера
+    RequestUtils.Callback callbackOneTimeCode = (fragment, result) -> {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+
+            this.code = jsonObject.getInt("code");
+
+        } catch (Exception e) {
+            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentRegisterCode\", \"method\": \"callbackOneTimeCode\", \"error\": \"" + e + "\"}", callbackLog).execute();
             EmptyResponse();
         }
     };

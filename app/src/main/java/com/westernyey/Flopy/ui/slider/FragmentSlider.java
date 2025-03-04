@@ -1,7 +1,6 @@
 package com.westernyey.Flopy.ui.slider;
 
-import static com.cripochec.Flopy.ui.utils.DataUtils.saveIncognito;
-
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,12 @@ import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.cardModel.Swap;
+import com.westernyey.Flopy.ui.filter.FilterConfirmationDialog;
 import com.westernyey.Flopy.ui.settings.FragmentSettings;
 
 import org.json.JSONObject;
 
 public class FragmentSlider extends Fragment {
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,71 +34,93 @@ public class FragmentSlider extends Fragment {
 
         // Добавляем SwapFragment в контейнер
         fragmentTransaction.add(R.id.swap_container, new Swap());
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss(); // Избегаем проблем с состоянием
 
         // Инициализация кнопок и бокового меню
         Button btnOpenMenu = rootView.findViewById(R.id.btn_open_menu);
         Button btnOpenSet = rootView.findViewById(R.id.btn_open_settings);
         Button btnOpenFil = rootView.findViewById(R.id.btn_open_filters);
 
+
         btnOpenMenu.setOnClickListener(v -> {
-            DrawerLayout drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
-            if (drawerLayout != null) {
-                drawerLayout.openDrawer(GravityCompat.START);
+            try {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+                    if (drawerLayout != null) {
+                        drawerLayout.openDrawer(GravityCompat.START);
+                    }
+                }
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentSlider\", \"method\": \"btnOpenMenu.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            }
+
+        });
+
+
+        btnOpenFil.setOnClickListener(v -> {
+            try {
+                FilterConfirmationDialog bottomSheet = new FilterConfirmationDialog();
+                bottomSheet.setFilterDialogListener(() -> {
+                    Swap swapFragment = (Swap) getChildFragmentManager().findFragmentById(R.id.swap_container);
+                    if (swapFragment != null) {
+                        swapFragment.updateCards(); // Вызываем обновление карт
+                    }
+                });
+                bottomSheet.show(getParentFragmentManager(), "FilterConfirmationDialog");
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentSlider\", \"method\": \"btnOpenFil.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
             }
         });
 
-        btnOpenFil.setOnClickListener(v -> {
-            Fragment fragment = new FragmentSettings();
-            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
-        });
+//        btnOpenFil.setOnClickListener(v -> {
+//            try {
+//                FilterConfirmationDialog bottomSheet = new FilterConfirmationDialog();
+//                bottomSheet.show(getParentFragmentManager(), "FilterConfirmationDialog");
+//            } catch (Exception e) {
+//                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentSlider\", \"method\": \"btnOpenFil.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
+//            }
+//
+//        });
 
         btnOpenSet.setOnClickListener(v -> {
-            Fragment fragment = new FragmentSettings();
-            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            try {
+                Fragment fragment = new FragmentSettings();
+                FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_main, fragment);
+            } catch (Exception e) {
+                new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentSlider\", \"method\": \"btnOpenSet.setOnClickListener\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            }
         });
-
-//        new RequestUtils(this, "get_incognito", "POST", "{\"id_person\": \"" + getUserId(requireContext()) + "\"}", callbackGetIncognito).execute();
 
         return rootView;
     }
 
     // Обработка логирования на сервере
-     RequestUtils.Callback callbackLog = (fragment, result) -> {
+    RequestUtils.Callback callbackLog = (fragment, result) -> {
         try {
             JSONObject jsonObject = new JSONObject(result);
             if (jsonObject.getInt("status") != 0){
                 showErrorToast("Ошибка логирования на сервере.");
             }
         } catch (Exception e) {
+            e.printStackTrace(); // Логируем ошибку
             showErrorToast("Ошибка логирования на клиенте.");
         }
     };
 
-    // Обработка ответа на сохранение статуса инкогнито пользователя
-    RequestUtils.Callback callbackGetIncognito = (fragment, result) -> {
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-            if (jsonObject.getInt("status") == 0){
-                saveIncognito(requireContext(), jsonObject.getInt("incognito_status"));
-            } else {
-                showErrorToast("Ошибка на сервере, status: "+jsonObject.getInt("status"));
-            }
-        } catch (Exception e) {
-            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentSlider\", \"method\": \"callbackGetIncognito\", \"error\": \"" + e + "\"}", callbackLog).execute();
-            EmptyResponse();
-        }
-    };
-
-
     // Обработка ошибки запроса
     public void EmptyResponse() {
-        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(),
-                "Ошибка callback.")); // Показываем сообщение об ошибке
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), "Ошибка callback."));
+        }
     }
 
     // Метод для показа сообщения об ошибке
     private void showErrorToast(String message) {
-        requireActivity().runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> ToastUtils.showShortToast(requireContext(), message));
+        }
     }
 }

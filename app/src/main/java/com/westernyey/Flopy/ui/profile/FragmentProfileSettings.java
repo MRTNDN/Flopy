@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -352,13 +353,19 @@ public class FragmentProfileSettings extends Fragment {
             // Отправка основной информации
             new RequestUtils(this, "save_persons_info", "POST", jsonRequestBody.toString(), callbackGetData).execute();
 
+
             // Отправка фотографий
             List<File> photoFiles = photos.stream()
                     .map(UserPhoto::getFile)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
-            new RequestUtils(this, "save_persons_photos", "POST", getDataPhotos(photos), photoFiles, callbackGetData).execute();
+            if (photoFiles.isEmpty()) {
+                new RequestUtils(this, "update_persons_photos", "POST", getDataPhotos(photos), callbackGetData).execute();
+            } else {
+                new RequestUtils(this, "save_persons_photos", "POST", getDataPhotos(photos), photoFiles, callbackGetData).execute();
+            }
+
 
         } catch (Exception e) {
             new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentProfileSettings\", \"method\": \"getData\", \"error\": \"" + e + "\"}", callbackLog).execute();
@@ -551,6 +558,8 @@ public class FragmentProfileSettings extends Fragment {
             // Убираем изображение из ImageView
             photoImageViews[photoNumber].setImageDrawable(null);
 
+            sortAndSetPhotosToImageViews();
+
             // Уменьшаем заполненность
             fullness -= 5;
             if (fullness < 0) fullness = 0;
@@ -569,24 +578,20 @@ public class FragmentProfileSettings extends Fragment {
             UserPhoto mainPhoto = photos.get(0);
             UserPhoto selectedPhoto = photos.get(photoNumber);
 
-            photos.set(0, selectedPhoto);
-            photos.set(photoNumber, mainPhoto);
+            mainPhoto.setDominating(photoNumber);
+            selectedPhoto.setDominating(0);
 
             // Обновляем изображения в ImageView
-            Glide.with(this).load(selectedPhoto.getFile() != null ? selectedPhoto.getFile() : selectedPhoto.getUrl())
-                    .into(photoImageViews[0]);
+            sortAndSetPhotosToImageViews();
 
-            if (mainPhoto.getFile() != null || mainPhoto.getUrl() != null) {
-                Glide.with(this).load(mainPhoto.getFile() != null ? mainPhoto.getFile() : mainPhoto.getUrl())
-                        .into(photoImageViews[photoNumber]);
-            } else {
-                photoImageViews[photoNumber].setImageDrawable(null);
-            }
         } catch (Exception e) {
             e.printStackTrace();
-            new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentProfileSettings\", \"method\": \"setMainPhoto\", \"error\": \"" + e + "\"}", callbackLog).execute();
+            new RequestUtils(this, "log", "POST",
+                    "{\"module\": \"FragmentProfileSettings\", \"method\": \"setMainPhoto\", \"error\": \"" + e + "\"}",
+                    callbackLog).execute();
         }
     }
+
 
     // Создание уникального файла для фото
     private File createUniqueFile(Context context) {
@@ -649,7 +654,7 @@ public class FragmentProfileSettings extends Fragment {
                 userPhoto.setDominating(photoNumber); // Привязываем номер фотографии
 
                 // Обновляем соответствующий ImageView
-                Glide.with(this).load(uniqueFile).into(photoImageViews[photoNumber]);
+                sortAndSetPhotosToImageViews();
 
                 // Обновляем текстовую информацию о заполненности
                 fullness += 5;
@@ -662,6 +667,46 @@ public class FragmentProfileSettings extends Fragment {
             new RequestUtils(this, "log", "POST", "{\"module\": \"FragmentProfileSettings\", \"method\": \"onActivityResult\", \"error\": \"" + e + "\"}", callbackLog).execute();
         }
     }
+
+    private void sortAndSetPhotosToImageViews() {
+        // 1. Фильтруем только фото с допустимым dominating (от 0 до 3)
+        List<UserPhoto> sortedPhotos = new ArrayList<>();
+        for (UserPhoto photo : photos) {
+            if (photo.getDominating() >= 0 && photo.getDominating() < photoImageViews.length) {
+                sortedPhotos.add(photo);
+            }
+        }
+
+        // 2. Сортируем по dominating
+        sortedPhotos.sort(Comparator.comparingInt(UserPhoto::getDominating));
+
+        // 3. Корректируем dominating (если пропущены значения)
+        for (int i = 0; i < sortedPhotos.size(); i++) {
+            sortedPhotos.get(i).setDominating(i); // Присваиваем новый индекс
+        }
+
+        // 4. Очищаем ImageView перед установкой новых фото
+        for (ImageView imageView : photoImageViews) {
+            imageView.setImageDrawable(null);
+        }
+
+        // 5. Устанавливаем фото в ImageView
+        for (UserPhoto photo : sortedPhotos) {
+            int index = photo.getDominating();
+            ImageView imageView = photoImageViews[index];
+
+            if (photo.getFile() != null) {
+                Glide.with(imageView.getContext())
+                        .load(photo.getFile())
+                        .into(imageView);
+            } else if (photo.getUrl() != null) {
+                Glide.with(imageView.getContext())
+                        .load(photo.getUrl())
+                        .into(imageView);
+            }
+        }
+    }
+
 
 
     // Обработка логирования на сервере
@@ -694,6 +739,7 @@ public class FragmentProfileSettings extends Fragment {
             EmptyResponse();
         }
     };
+
 
     // Установка данных профиля
     @SuppressLint("SetTextI18n")

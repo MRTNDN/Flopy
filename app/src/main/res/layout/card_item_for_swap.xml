@@ -6,7 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/rounded_edges"
     android:layout_gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="68dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp">
 
 
     <!-- Контейрнер изображение -->
@@ -16,7 +20,6 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:cardCornerRadius="20dp"
-        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +36,19 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/target"
+                tools:ignore="UselessLeaf">
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view"
@@ -171,7 +187,9 @@
                 app:justifyContent="flex_start"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data"></com.google.android.flexbox.FlexboxLayout>
+                app:layout_constraintTop_toBottomOf="@+id/data">
+
+            </com.google.android.flexbox.FlexboxLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

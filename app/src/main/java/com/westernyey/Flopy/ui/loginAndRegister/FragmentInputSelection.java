@@ -1,4 +1,4 @@
-package com.westernyey.Flopy.ui.login;
+package com.westernyey.Flopy.ui.loginAndRegister;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.westernyey.Flopy.ui.login;
+package com.westernyey.Flopy.ui.loginAndRegister;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import com.cripochec.Flopy.ui.utils.RequestUtils;
 import com.cripochec.Flopy.ui.utils.ToastUtils;
 import com.westernyey.Flopy.R;
 import com.westernyey.Flopy.ui.ActivityMain;
-import com.westernyey.Flopy.ui.register.FragmentRegister;
 
 import org.json.JSONObject;
 
@@ -34,6 +33,7 @@ public class FragmentLogin extends Fragment {
         password = rootView.findViewById(R.id.editPassword); // Находим поле для ввода пароля
         Button but_login = rootView.findViewById(R.id.buttonLogin); // Находим кнопку для входа
         TextView but_register = rootView.findViewById(R.id.textRegister); // Находим текст для перехода к регистрации
+        TextView but_resurrect = rootView.findViewById(R.id.textResurrect); // Находим текст для восстановления пароля
 
         but_login.setOnClickListener(v -> {
             try {
@@ -63,6 +63,12 @@ public class FragmentLogin extends Fragment {
             // Обработка нажатия на кнопку but_register
             Fragment fragment = new FragmentRegister(); // Создаем новый фрагмент для регистрации
             FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment); // Заменяем текущий фрагмент на фрагмент регистрации
+        });
+
+        but_resurrect.setOnClickListener(v -> {
+            // Обработка нажатия на кнопку but_resurrect
+            Fragment fragment = new FragmentResurrectEmail(); // Создаем новый фрагмент для восстановления пароля
+            FragmentUtils.replaceFragment(requireActivity().getSupportFragmentManager(), R.id.fr_activity_start, fragment); // Заменяем текущий фрагмент на восстановления пароля
         });
 
         return rootView;

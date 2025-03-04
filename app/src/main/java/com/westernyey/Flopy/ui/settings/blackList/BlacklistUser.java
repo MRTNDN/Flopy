@@ -4,18 +4,18 @@ public class BlacklistUser {
     private final String id;
     private final String name;
     private final int age;
-    private final int photoResource;
+    private final String photoUrl;
 
-    public BlacklistUser(String id, String name, int age, int photoResource) {
+    public BlacklistUser(String id, String name, int age, String photoUrl) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.photoResource = photoResource;
+        this.photoUrl = photoUrl;
     }
 
-    // Getters and setters
     public String getId() { return id; }
     public String getName() { return name; }
     public int getAge() { return age; }
-    public int getPhotoResource() { return photoResource; }
+    public String getPhotoUrl() { return photoUrl; }
 }
+

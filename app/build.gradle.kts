@@ -9,6 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.westernyey.Flopy"
         minSdk = 28
+        //noinspection OldTargetApi
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -31,7 +32,9 @@ android {
     }
 }
 
+
 dependencies {
+    implementation("com.github.Jay-Goo:RangeSeekBar:v2.0.4")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     implementation ("com.lorentzos.swipecards:library:1.0.9")

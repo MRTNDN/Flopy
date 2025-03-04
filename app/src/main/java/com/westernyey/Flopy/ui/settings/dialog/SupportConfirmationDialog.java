@@ -13,16 +13,6 @@ import com.westernyey.Flopy.R;
 
 public class SupportConfirmationDialog extends BottomSheetDialogFragment {
 
-    private final OnSupportConfirmedListener listener;
-
-    public interface OnSupportConfirmedListener {
-        void onExitConfirmed();
-    }
-
-    public SupportConfirmationDialog(OnSupportConfirmedListener listener) {
-        this.listener = listener;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
